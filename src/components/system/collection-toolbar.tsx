@@ -86,7 +86,7 @@ export function CollectionToolbar({
           ))}
 
           {sortOptions.length > 0 && (
-            <Select value={sort ?? sortOptions[0]?.value} onValueChange={(v) => onSort?.(v)}>
+            <Select value={sort ?? sortOptions[0]!.value} onValueChange={(v) => onSort?.(v)}>
               <SelectTrigger className="h-11 min-w-[10rem]" aria-label="Sort">
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
