@@ -50,7 +50,7 @@ export function CommandPalette({
   };
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange} title="Command palette" description="Jump anywhere in AI5K">
+    <CommandDialog open={open} onOpenChange={onOpenChange}>
       <CommandInput placeholder="Search people, organisations, opportunities or actions…" />
       <CommandList className="max-h-[26rem]">
         <CommandEmpty>No matches. Every result here is evidence-backed.</CommandEmpty>
