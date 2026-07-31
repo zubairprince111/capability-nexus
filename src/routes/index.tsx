@@ -36,7 +36,6 @@ function Landing() {
     <div className="min-h-dvh bg-background">
       <SiteHeader />
       <main>
-        <h1 className="sr-only">AI5K — the operating system for verified AI capability</h1>
         <LandingHero />
         <ScrollStory />
         <LiveStatistics />
