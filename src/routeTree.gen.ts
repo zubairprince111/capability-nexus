@@ -10,13 +10,39 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as DocsRouteImport } from './routes/docs'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
+import { Route as AppAssetsRouteImport } from './routes/app.assets'
+import { Route as AppCommunityRouteImport } from './routes/app.community'
+import { Route as AppLearningRouteImport } from './routes/app.learning'
+import { Route as AppMarketplaceRouteImport } from './routes/app.marketplace'
+import { Route as AppMessagesRouteImport } from './routes/app.messages'
+import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppProjectsRouteImport } from './routes/app.projects'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppUniverseRouteImport } from './routes/app.universe'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AuthSignupRouteImport } from './routes/auth.signup'
+import { Route as AppOpportunitiesIndexRouteImport } from './routes/app.opportunities.index'
+import { Route as AppOpportunitiesIdRouteImport } from './routes/app.opportunities.$id'
+import { Route as AppOrganizationsIndexRouteImport } from './routes/app.organizations.index'
+import { Route as AppOrganizationsSlugRouteImport } from './routes/app.organizations.$slug'
+import { Route as AppProfessionalsIndexRouteImport } from './routes/app.professionals.index'
+import { Route as AppProfessionalsHandleRouteImport } from './routes/app.professionals.$handle'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -24,9 +50,69 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssetsRoute = AppAssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCommunityRoute = AppCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLearningRoute = AppLearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMarketplaceRoute = AppMarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProjectsRoute = AppProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
 const AppUniverseRoute = AppUniverseRouteImport.update({
@@ -34,36 +120,219 @@ const AppUniverseRoute = AppUniverseRouteImport.update({
   path: '/universe',
   getParentRoute: () => AppRoute,
 } as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppOpportunitiesIndexRoute = AppOpportunitiesIndexRouteImport.update({
+  id: '/opportunities/',
+  path: '/opportunities/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOpportunitiesIdRoute = AppOpportunitiesIdRouteImport.update({
+  id: '/opportunities/$id',
+  path: '/opportunities/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrganizationsIndexRoute = AppOrganizationsIndexRouteImport.update({
+  id: '/organizations/',
+  path: '/organizations/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrganizationsSlugRoute = AppOrganizationsSlugRouteImport.update({
+  id: '/organizations/$slug',
+  path: '/organizations/$slug',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfessionalsIndexRoute = AppProfessionalsIndexRouteImport.update({
+  id: '/professionals/',
+  path: '/professionals/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfessionalsHandleRoute = AppProfessionalsHandleRouteImport.update({
+  id: '/professionals/$handle',
+  path: '/professionals/$handle',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
+  '/docs': typeof DocsRoute
+  '/pricing': typeof PricingRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analytics': typeof AppAnalyticsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/community': typeof AppCommunityRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/marketplace': typeof AppMarketplaceRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/projects': typeof AppProjectsRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/universe': typeof AppUniverseRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/app/': typeof AppIndexRoute
+  '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
+  '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
+  '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
+  '/app/opportunities/': typeof AppOpportunitiesIndexRoute
+  '/app/organizations/': typeof AppOrganizationsIndexRoute
+  '/app/professionals/': typeof AppProfessionalsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/docs': typeof DocsRoute
+  '/pricing': typeof PricingRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analytics': typeof AppAnalyticsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/community': typeof AppCommunityRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/marketplace': typeof AppMarketplaceRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/projects': typeof AppProjectsRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/universe': typeof AppUniverseRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/app': typeof AppIndexRoute
+  '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
+  '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
+  '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
+  '/app/opportunities': typeof AppOpportunitiesIndexRoute
+  '/app/organizations': typeof AppOrganizationsIndexRoute
+  '/app/professionals': typeof AppProfessionalsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
+  '/docs': typeof DocsRoute
+  '/pricing': typeof PricingRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analytics': typeof AppAnalyticsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/community': typeof AppCommunityRoute
+  '/app/learning': typeof AppLearningRoute
+  '/app/marketplace': typeof AppMarketplaceRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/projects': typeof AppProjectsRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/universe': typeof AppUniverseRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/app/': typeof AppIndexRoute
+  '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
+  '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
+  '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
+  '/app/opportunities/': typeof AppOpportunitiesIndexRoute
+  '/app/organizations/': typeof AppOrganizationsIndexRoute
+  '/app/professionals/': typeof AppProfessionalsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/universe' | '/app/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/app'
+    | '/docs'
+    | '/pricing'
+    | '/app/admin'
+    | '/app/analytics'
+    | '/app/assets'
+    | '/app/community'
+    | '/app/learning'
+    | '/app/marketplace'
+    | '/app/messages'
+    | '/app/notifications'
+    | '/app/projects'
+    | '/app/settings'
+    | '/app/universe'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/app/'
+    | '/app/opportunities/$id'
+    | '/app/organizations/$slug'
+    | '/app/professionals/$handle'
+    | '/app/opportunities/'
+    | '/app/organizations/'
+    | '/app/professionals/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/universe' | '/app'
-  id: '__root__' | '/' | '/app' | '/app/universe' | '/app/'
+  to:
+    | '/'
+    | '/about'
+    | '/docs'
+    | '/pricing'
+    | '/app/admin'
+    | '/app/analytics'
+    | '/app/assets'
+    | '/app/community'
+    | '/app/learning'
+    | '/app/marketplace'
+    | '/app/messages'
+    | '/app/notifications'
+    | '/app/projects'
+    | '/app/settings'
+    | '/app/universe'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/app'
+    | '/app/opportunities/$id'
+    | '/app/organizations/$slug'
+    | '/app/professionals/$handle'
+    | '/app/opportunities'
+    | '/app/organizations'
+    | '/app/professionals'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/app'
+    | '/docs'
+    | '/pricing'
+    | '/app/admin'
+    | '/app/analytics'
+    | '/app/assets'
+    | '/app/community'
+    | '/app/learning'
+    | '/app/marketplace'
+    | '/app/messages'
+    | '/app/notifications'
+    | '/app/projects'
+    | '/app/settings'
+    | '/app/universe'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/app/'
+    | '/app/opportunities/$id'
+    | '/app/organizations/$slug'
+    | '/app/professionals/$handle'
+    | '/app/opportunities/'
+    | '/app/organizations/'
+    | '/app/professionals/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AppRoute: typeof AppRouteWithChildren
+  DocsRoute: typeof DocsRoute
+  PricingRoute: typeof PricingRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +344,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app': {
       id: '/app'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -89,6 +379,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/analytics': {
+      id: '/app/analytics'
+      path: '/analytics'
+      fullPath: '/app/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/assets': {
+      id: '/app/assets'
+      path: '/assets'
+      fullPath: '/app/assets'
+      preLoaderRoute: typeof AppAssetsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/community': {
+      id: '/app/community'
+      path: '/community'
+      fullPath: '/app/community'
+      preLoaderRoute: typeof AppCommunityRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/learning': {
+      id: '/app/learning'
+      path: '/learning'
+      fullPath: '/app/learning'
+      preLoaderRoute: typeof AppLearningRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/marketplace': {
+      id: '/app/marketplace'
+      path: '/marketplace'
+      fullPath: '/app/marketplace'
+      preLoaderRoute: typeof AppMarketplaceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/messages': {
+      id: '/app/messages'
+      path: '/messages'
+      fullPath: '/app/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/notifications': {
+      id: '/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/projects': {
+      id: '/app/projects'
+      path: '/projects'
+      fullPath: '/app/projects'
+      preLoaderRoute: typeof AppProjectsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/universe': {
       id: '/app/universe'
       path: '/universe'
@@ -96,25 +456,128 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUniverseRouteImport
       parentRoute: typeof AppRoute
     }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/opportunities/': {
+      id: '/app/opportunities/'
+      path: '/opportunities'
+      fullPath: '/app/opportunities/'
+      preLoaderRoute: typeof AppOpportunitiesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/opportunities/$id': {
+      id: '/app/opportunities/$id'
+      path: '/opportunities/$id'
+      fullPath: '/app/opportunities/$id'
+      preLoaderRoute: typeof AppOpportunitiesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/organizations/': {
+      id: '/app/organizations/'
+      path: '/organizations'
+      fullPath: '/app/organizations/'
+      preLoaderRoute: typeof AppOrganizationsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/organizations/$slug': {
+      id: '/app/organizations/$slug'
+      path: '/organizations/$slug'
+      fullPath: '/app/organizations/$slug'
+      preLoaderRoute: typeof AppOrganizationsSlugRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/professionals/': {
+      id: '/app/professionals/'
+      path: '/professionals'
+      fullPath: '/app/professionals/'
+      preLoaderRoute: typeof AppProfessionalsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/professionals/$handle': {
+      id: '/app/professionals/$handle'
+      path: '/professionals/$handle'
+      fullPath: '/app/professionals/$handle'
+      preLoaderRoute: typeof AppProfessionalsHandleRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
+  AppAssetsRoute: typeof AppAssetsRoute
+  AppCommunityRoute: typeof AppCommunityRoute
+  AppLearningRoute: typeof AppLearningRoute
+  AppMarketplaceRoute: typeof AppMarketplaceRoute
+  AppMessagesRoute: typeof AppMessagesRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProjectsRoute: typeof AppProjectsRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppUniverseRoute: typeof AppUniverseRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppOpportunitiesIdRoute: typeof AppOpportunitiesIdRoute
+  AppOrganizationsSlugRoute: typeof AppOrganizationsSlugRoute
+  AppProfessionalsHandleRoute: typeof AppProfessionalsHandleRoute
+  AppOpportunitiesIndexRoute: typeof AppOpportunitiesIndexRoute
+  AppOrganizationsIndexRoute: typeof AppOrganizationsIndexRoute
+  AppProfessionalsIndexRoute: typeof AppProfessionalsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppAnalyticsRoute: AppAnalyticsRoute,
+  AppAssetsRoute: AppAssetsRoute,
+  AppCommunityRoute: AppCommunityRoute,
+  AppLearningRoute: AppLearningRoute,
+  AppMarketplaceRoute: AppMarketplaceRoute,
+  AppMessagesRoute: AppMessagesRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppProjectsRoute: AppProjectsRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppUniverseRoute: AppUniverseRoute,
   AppIndexRoute: AppIndexRoute,
+  AppOpportunitiesIdRoute: AppOpportunitiesIdRoute,
+  AppOrganizationsSlugRoute: AppOrganizationsSlugRoute,
+  AppProfessionalsHandleRoute: AppProfessionalsHandleRoute,
+  AppOpportunitiesIndexRoute: AppOpportunitiesIndexRoute,
+  AppOrganizationsIndexRoute: AppOrganizationsIndexRoute,
+  AppProfessionalsIndexRoute: AppProfessionalsIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AppRoute: AppRouteWithChildren,
+  DocsRoute: DocsRoute,
+  PricingRoute: PricingRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

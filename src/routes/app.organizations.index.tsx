@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageTransition } from "@/components/motion/primitives";
 import { EmptyState, SectionHeading } from "@/components/system/primitives";
 
-export const Route = createFileRoute("/app/organizations")({
+export const Route = createFileRoute("/app/organizations/")({
   head: () => ({
     meta: [
       { title: "Organisations — AI5K" },
