@@ -1,24 +1,62 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { WorldCapabilityField } from "@/components/landing/world-capability-field";
+import {
+  ClosingInvitation,
+  LandingHero,
+  LiveStatistics,
+  ProductPreview,
+  ScrollStory,
+  VerificationLadder,
+} from "@/components/landing/sections";
+import { SectionHeading } from "@/components/system/primitives";
+import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "AI5K — Verified AI capability, proven not claimed" },
+      {
+        name: "description",
+        content:
+          "AI5K is the global operating system for verified AI capability: inspectable evidence for every professional, organisation, project and model.",
+      },
+      { property: "og:title", content: "AI5K — Verified AI capability, proven not claimed" },
+      {
+        property: "og:description",
+        content: "Inspectable evidence for every AI professional, organisation, project and model.",
+      },
+    ],
+  }),
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Landing() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-dvh bg-background">
+      <SiteHeader />
+      <main>
+        <h1 className="sr-only">AI5K — the operating system for verified AI capability</h1>
+        <LandingHero />
+        <ScrollStory />
+        <LiveStatistics />
+        <VerificationLadder />
+        <ProductPreview />
+        <section className="border-t border-border bg-surface/40 py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeading
+              eyebrow="Global coverage"
+              title="Capability concentrates. We show exactly where."
+              description="Presence is measured in verified professionals, not marketing offices."
+            />
+            <div className="mt-10">
+              <WorldCapabilityField />
+            </div>
+          </div>
+        </section>
+        <ClosingInvitation />
+      </main>
+      <SiteFooter />
     </div>
   );
 }
