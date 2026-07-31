@@ -39,7 +39,12 @@ function MissionControl() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.data.map((metric, i) => (
           <Reveal key={metric.id} delay={i * 0.06}>
-            <MetricTile metric={metric} />
+            <MetricTile
+              label={metric.label}
+              value={`${metric.value.toLocaleString()}${metric.unit ?? ""}`}
+              delta={metric.delta}
+              hint={metric.hint}
+            />
           </Reveal>
         ))}
       </div>
