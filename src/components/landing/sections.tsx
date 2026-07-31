@@ -25,16 +25,9 @@ export function LandingHero() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div style={{ opacity: copyOpacity }} className="mx-auto max-w-3xl text-center">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur">
-              <ShieldCheck className="size-3.5 text-verified" aria-hidden />
-              41,860 attestations issued this quarter
-            </span>
-          </Reveal>
-
           <Reveal delay={0.08}>
-            <h1 className="text-display mt-7 text-[clamp(2.75rem,7vw,5.25rem)]">
-              Capability, <span className="italic text-primary">proven.</span>
+            <h1 className="text-pixel mt-7 text-[clamp(2.75rem,7vw,5.25rem)]">
+              <span className="whitespace-nowrap">Capability, <span className="italic text-primary">proven.</span></span>
               <br />
               Not claimed.
             </h1>

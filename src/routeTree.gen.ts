@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as ProviderRouteImport } from './routes/provider'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
@@ -28,6 +29,10 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppUniverseRouteImport } from './routes/app.universe'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
+import { Route as CheckoutServiceIdRouteImport } from './routes/checkout.$serviceId'
+import { Route as ProviderIndexRouteImport } from './routes/provider.index'
+import { Route as ProviderCreateServiceRouteImport } from './routes/provider.create-service'
+import { Route as ProviderLogsRouteImport } from './routes/provider.logs'
 import { Route as AppOpportunitiesIndexRouteImport } from './routes/app.opportunities.index'
 import { Route as AppOpportunitiesIdRouteImport } from './routes/app.opportunities.$id'
 import { Route as AppOrganizationsIndexRouteImport } from './routes/app.organizations.index'
@@ -58,6 +63,11 @@ const DocsRoute = DocsRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProviderRoute = ProviderRouteImport.update({
+  id: '/provider',
+  path: '/provider',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -130,6 +140,26 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
   path: '/auth/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutServiceIdRoute = CheckoutServiceIdRouteImport.update({
+  id: '/checkout/$serviceId',
+  path: '/checkout/$serviceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProviderIndexRoute = ProviderIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProviderRoute,
+} as any)
+const ProviderCreateServiceRoute = ProviderCreateServiceRouteImport.update({
+  id: '/create-service',
+  path: '/create-service',
+  getParentRoute: () => ProviderRoute,
+} as any)
+const ProviderLogsRoute = ProviderLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => ProviderRoute,
+} as any)
 const AppOpportunitiesIndexRoute = AppOpportunitiesIndexRouteImport.update({
   id: '/opportunities/',
   path: '/opportunities/',
@@ -167,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/docs': typeof DocsRoute
   '/pricing': typeof PricingRoute
+  '/provider': typeof ProviderRouteWithChildren
   '/app/admin': typeof AppAdminRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/assets': typeof AppAssetsRoute
@@ -180,7 +211,11 @@ export interface FileRoutesByFullPath {
   '/app/universe': typeof AppUniverseRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/checkout/$serviceId': typeof CheckoutServiceIdRoute
+  '/provider/create-service': typeof ProviderCreateServiceRoute
+  '/provider/logs': typeof ProviderLogsRoute
   '/app/': typeof AppIndexRoute
+  '/provider/': typeof ProviderIndexRoute
   '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
   '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
   '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
@@ -206,7 +241,11 @@ export interface FileRoutesByTo {
   '/app/universe': typeof AppUniverseRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/checkout/$serviceId': typeof CheckoutServiceIdRoute
+  '/provider/create-service': typeof ProviderCreateServiceRoute
+  '/provider/logs': typeof ProviderLogsRoute
   '/app': typeof AppIndexRoute
+  '/provider': typeof ProviderIndexRoute
   '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
   '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
   '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
@@ -221,6 +260,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/docs': typeof DocsRoute
   '/pricing': typeof PricingRoute
+  '/provider': typeof ProviderRouteWithChildren
   '/app/admin': typeof AppAdminRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/assets': typeof AppAssetsRoute
@@ -234,7 +274,11 @@ export interface FileRoutesById {
   '/app/universe': typeof AppUniverseRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/checkout/$serviceId': typeof CheckoutServiceIdRoute
+  '/provider/create-service': typeof ProviderCreateServiceRoute
+  '/provider/logs': typeof ProviderLogsRoute
   '/app/': typeof AppIndexRoute
+  '/provider/': typeof ProviderIndexRoute
   '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
   '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
   '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
@@ -250,6 +294,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/docs'
     | '/pricing'
+    | '/provider'
     | '/app/admin'
     | '/app/analytics'
     | '/app/assets'
@@ -263,7 +308,11 @@ export interface FileRouteTypes {
     | '/app/universe'
     | '/auth/login'
     | '/auth/signup'
+    | '/checkout/$serviceId'
+    | '/provider/create-service'
+    | '/provider/logs'
     | '/app/'
+    | '/provider/'
     | '/app/opportunities/$id'
     | '/app/organizations/$slug'
     | '/app/professionals/$handle'
@@ -289,7 +338,11 @@ export interface FileRouteTypes {
     | '/app/universe'
     | '/auth/login'
     | '/auth/signup'
+    | '/checkout/$serviceId'
+    | '/provider/create-service'
+    | '/provider/logs'
     | '/app'
+    | '/provider'
     | '/app/opportunities/$id'
     | '/app/organizations/$slug'
     | '/app/professionals/$handle'
@@ -303,6 +356,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/docs'
     | '/pricing'
+    | '/provider'
     | '/app/admin'
     | '/app/analytics'
     | '/app/assets'
@@ -316,7 +370,11 @@ export interface FileRouteTypes {
     | '/app/universe'
     | '/auth/login'
     | '/auth/signup'
+    | '/checkout/$serviceId'
+    | '/provider/create-service'
+    | '/provider/logs'
     | '/app/'
+    | '/provider/'
     | '/app/opportunities/$id'
     | '/app/organizations/$slug'
     | '/app/professionals/$handle'
@@ -331,8 +389,10 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   DocsRoute: typeof DocsRoute
   PricingRoute: typeof PricingRoute
+  ProviderRoute: typeof ProviderRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
+  CheckoutServiceIdRoute: typeof CheckoutServiceIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -370,6 +430,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provider': {
+      id: '/provider'
+      path: '/provider'
+      fullPath: '/provider'
+      preLoaderRoute: typeof ProviderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -470,6 +537,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/$serviceId': {
+      id: '/checkout/$serviceId'
+      path: '/checkout/$serviceId'
+      fullPath: '/checkout/$serviceId'
+      preLoaderRoute: typeof CheckoutServiceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provider/': {
+      id: '/provider/'
+      path: '/'
+      fullPath: '/provider/'
+      preLoaderRoute: typeof ProviderIndexRouteImport
+      parentRoute: typeof ProviderRoute
+    }
+    '/provider/create-service': {
+      id: '/provider/create-service'
+      path: '/create-service'
+      fullPath: '/provider/create-service'
+      preLoaderRoute: typeof ProviderCreateServiceRouteImport
+      parentRoute: typeof ProviderRoute
+    }
+    '/provider/logs': {
+      id: '/provider/logs'
+      path: '/logs'
+      fullPath: '/provider/logs'
+      preLoaderRoute: typeof ProviderLogsRouteImport
+      parentRoute: typeof ProviderRoute
+    }
     '/app/opportunities/': {
       id: '/app/opportunities/'
       path: '/opportunities'
@@ -559,15 +654,43 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface ProviderRouteChildren {
+  ProviderCreateServiceRoute: typeof ProviderCreateServiceRoute
+  ProviderLogsRoute: typeof ProviderLogsRoute
+  ProviderIndexRoute: typeof ProviderIndexRoute
+}
+
+const ProviderRouteChildren: ProviderRouteChildren = {
+  ProviderCreateServiceRoute: ProviderCreateServiceRoute,
+  ProviderLogsRoute: ProviderLogsRoute,
+  ProviderIndexRoute: ProviderIndexRoute,
+}
+
+const ProviderRouteWithChildren = ProviderRoute._addFileChildren(
+  ProviderRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AppRoute: AppRouteWithChildren,
   DocsRoute: DocsRoute,
   PricingRoute: PricingRoute,
+  ProviderRoute: ProviderRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
+  CheckoutServiceIdRoute: CheckoutServiceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

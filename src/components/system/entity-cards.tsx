@@ -17,10 +17,10 @@ function Avatar({ initials, tone = "primary" }: { initials: string; tone?: "prim
   return (
     <span
       className={cn(
-        "grid size-11 shrink-0 place-items-center rounded-xl border text-data text-xs font-semibold tracking-wider",
+        "grid size-12 shrink-0 place-items-center rounded-full border text-xs font-semibold tracking-wider",
         tone === "primary"
-          ? "border-primary/25 bg-primary/10 text-primary"
-          : "border-proof/25 bg-proof/10 text-proof",
+          ? "border-primary/20 bg-primary/10 text-primary shadow-[inset_0_0_10px_rgba(var(--primary),0.1)]"
+          : "border-proof/20 bg-proof/10 text-proof shadow-[inset_0_0_10px_rgba(var(--proof),0.1)]",
       )}
       aria-hidden
     >
@@ -34,54 +34,66 @@ export function ProfessionalCard({ person }: { person: Professional }) {
     <Link
       to="/app/professionals/$handle"
       params={{ handle: person.handle }}
-      className="surface-card lift group block p-5 focus-visible:outline-none"
+      className="group relative flex flex-col justify-between rounded-xl border border-border bg-surface p-6 transition-all hover:border-primary/40 hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] focus-visible:outline-none"
     >
-      <div className="flex items-start gap-3">
-        <Avatar initials={person.initials} />
-        <div className="min-w-0 flex-1">
-          <div className="flex min-w-0 items-center gap-2">
-            <h3 className="truncate font-sans text-base font-semibold tracking-tight">{person.name}</h3>
-            <VerificationBadge level={person.level} withLabel={false} />
+      <div>
+        <div className="flex items-start gap-4">
+          <Avatar initials={person.initials} />
+          <div className="min-w-0 flex-1 pt-0.5">
+            <div className="flex min-w-0 items-center justify-between gap-2">
+              <h3 className="truncate font-sans text-base font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                {person.name}
+              </h3>
+              <VerificationBadge level={person.level} withLabel={false} />
+            </div>
+            <p className="mt-0.5 truncate text-sm text-muted-foreground">{person.title}</p>
           </div>
-          <p className="mt-0.5 truncate text-sm text-muted-foreground">{person.title}</p>
         </div>
-        <ArrowUpRight className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-      </div>
 
-      <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{person.headline}</p>
+        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {person.headline}
+        </p>
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {person.domains.slice(0, 3).map((d) => (
-          <Tag key={d.id}>{d.name}</Tag>
-        ))}
-      </div>
-
-      <div className="mt-5 grid grid-cols-3 gap-3 border-t border-border pt-4">
-        <div>
-          <p className="text-eyebrow">Index</p>
-          <p className="text-data mt-1 text-sm font-semibold">{person.capabilityIndex}</p>
-        </div>
-        <div>
-          <p className="text-eyebrow">Proof</p>
-          <p className="text-data mt-1 text-sm font-semibold">{Math.round(person.proofRatio * 100)}%</p>
-        </div>
-        <div>
-          <p className="text-eyebrow">Attested</p>
-          <p className="text-data mt-1 text-sm font-semibold">{person.attestations}</p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {person.domains.slice(0, 3).map((d) => (
+            <span 
+              key={d.id} 
+              className="inline-flex items-center rounded bg-surface-foreground/5 px-2 py-1 text-[0.6875rem] font-medium text-muted-foreground transition-colors hover:bg-surface-foreground/10 hover:text-foreground"
+            >
+              {d.name}
+            </span>
+          ))}
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5">
-          <MapPin className="size-3.5" aria-hidden />
-          {person.location}
-        </span>
-        <span className="inline-flex items-center gap-1.5 capitalize">
-          <StatusDot
-            tone={person.availability === "open" ? "verified" : person.availability === "selective" ? "proof" : "muted"}
-          />
-          {person.availability}
-        </span>
+      <div className="mt-6">
+        <div className="grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-border/50 bg-border/50">
+          <div className="bg-surface px-3 py-2 text-center">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-muted-foreground">Index</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-foreground">{person.capabilityIndex}</p>
+          </div>
+          <div className="bg-surface px-3 py-2 text-center">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-muted-foreground">Proof</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-foreground">{Math.round(person.proofRatio * 100)}%</p>
+          </div>
+          <div className="bg-surface px-3 py-2 text-center">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-muted-foreground">Attested</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-foreground">{person.attestations}</p>
+          </div>
+        </div>
+
+        <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 font-medium">
+            <MapPin className="size-3.5" aria-hidden />
+            {person.location}
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-medium capitalize">
+            <StatusDot
+              tone={person.availability === "open" ? "verified" : person.availability === "selective" ? "proof" : "muted"}
+            />
+            {person.availability}
+          </span>
+        </div>
       </div>
     </Link>
   );

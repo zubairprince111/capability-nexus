@@ -15,11 +15,21 @@ export const Route = createFileRoute("/auth/signup")({
   component: Signup,
 });
 
+import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
+
 function Signup() {
   return (
-    <PageTransition className="space-y-8">
-      <SectionHeading eyebrow="Request access" title="Request access" description="Request access to AI5K." />
-      <EmptyState title="Nothing verified here yet" description="Evidence for this surface will appear as soon as it is attested." />
-    </PageTransition>
+    <div className="min-h-dvh bg-background">
+      <SiteHeader />
+      <main className="py-24">
+        <PageTransition className="space-y-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeading eyebrow="Sign up" title="Request Access" description="Request access to AI5K." />
+            <EmptyState title="Nothing verified here yet" description="Evidence for this surface will appear as soon as it is attested." />
+          </div>
+        </PageTransition>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

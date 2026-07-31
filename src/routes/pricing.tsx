@@ -15,11 +15,21 @@ export const Route = createFileRoute("/pricing")({
   component: Pricing,
 });
 
+import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
+
 function Pricing() {
   return (
-    <PageTransition className="space-y-8">
-      <SectionHeading eyebrow="Pricing" title="Pricing" description="Access tiers for professionals, organisations and assurance bodies." />
-      <EmptyState title="Nothing verified here yet" description="Evidence for this surface will appear as soon as it is attested." />
-    </PageTransition>
+    <div className="min-h-dvh bg-background">
+      <SiteHeader />
+      <main className="py-24">
+        <PageTransition className="space-y-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeading eyebrow="Pricing" title="Pricing" description="Access tiers for professionals, organisations and assurance bodies." />
+            <EmptyState title="Nothing verified here yet" description="Evidence for this surface will appear as soon as it is attested." />
+          </div>
+        </PageTransition>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

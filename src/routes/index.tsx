@@ -37,22 +37,11 @@ function Landing() {
       <SiteHeader />
       <main>
         <LandingHero />
-        <ScrollStory />
         <LiveStatistics />
+        <ScrollStory />
         <VerificationLadder />
         <ProductPreview />
-        <section className="border-t border-border bg-surface/40 py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              eyebrow="Global coverage"
-              title="Capability concentrates. We show exactly where."
-              description="Presence is measured in verified professionals, not marketing offices."
-            />
-            <div className="mt-10">
-              <WorldCapabilityField />
-            </div>
-          </div>
-        </section>
+
         <ClosingInvitation />
       </main>
       <SiteFooter />
