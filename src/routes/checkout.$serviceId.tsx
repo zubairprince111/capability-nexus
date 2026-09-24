@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CreditCard, Lock, Smartphone } from "lucide-react";
+import { ArrowLeft, ArrowRight, CreditCard, Lock, Smartphone } from "lucide-react";
 import { useState } from "react";
 
 import { Wordmark } from "@/components/brand/logo";

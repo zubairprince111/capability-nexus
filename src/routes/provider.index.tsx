@@ -146,7 +146,7 @@ function ProviderOverview() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Tool Performance</h2>
-              <Link to="/provider/services" className="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+              <Link to="/app/marketplace" className="text-sm font-medium text-primary hover:underline flex items-center gap-1">
                 View All <ArrowRight className="size-4" />
               </Link>
             </div>

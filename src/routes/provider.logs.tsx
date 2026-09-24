@@ -8,7 +8,25 @@ export const Route = createFileRoute("/provider/logs")({
   component: ProviderLogs,
 });
 
-const LOGS = [
+interface TraceItem {
+  step: string;
+  time: string;
+  error?: boolean;
+}
+
+interface LogEntry {
+  id: string;
+  tool: string;
+  time: string;
+  status: "Success" | "Failed";
+  error?: string;
+  duration: string;
+  icon: typeof ImageIcon;
+  inputs: Record<string, unknown>;
+  trace: TraceItem[];
+}
+
+const LOGS: LogEntry[] = [
   {
     id: "#REQ-8829",
     tool: "Image Generator Pro",

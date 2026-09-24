@@ -34,23 +34,29 @@ export function ProfessionalCard({ person }: { person: Professional }) {
     <Link
       to="/app/professionals/$handle"
       params={{ handle: person.handle }}
-      className="group relative flex flex-col justify-between rounded-xl border border-border bg-surface p-6 transition-all hover:border-primary/40 hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] focus-visible:outline-none"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] focus-visible:outline-none"
     >
-      <div>
+      {/* Subtle top border highlight */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />
+      
+      {/* Hover glow effect */}
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
+
+      <div className="relative z-10">
         <div className="flex items-start gap-4">
           <Avatar initials={person.initials} />
           <div className="min-w-0 flex-1 pt-0.5">
             <div className="flex min-w-0 items-center justify-between gap-2">
-              <h3 className="truncate font-sans text-base font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+              <h3 className="truncate font-sans text-base font-semibold tracking-tight text-white/90 transition-colors group-hover:text-primary">
                 {person.name}
               </h3>
               <VerificationBadge level={person.level} withLabel={false} />
             </div>
-            <p className="mt-0.5 truncate text-sm text-muted-foreground">{person.title}</p>
+            <p className="mt-0.5 truncate text-sm text-white/50">{person.title}</p>
           </div>
         </div>
 
-        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-white/60">
           {person.headline}
         </p>
 
@@ -58,7 +64,7 @@ export function ProfessionalCard({ person }: { person: Professional }) {
           {person.domains.slice(0, 3).map((d) => (
             <span 
               key={d.id} 
-              className="inline-flex items-center rounded bg-surface-foreground/5 px-2 py-1 text-[0.6875rem] font-medium text-muted-foreground transition-colors hover:bg-surface-foreground/10 hover:text-foreground"
+              className="inline-flex items-center rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[0.6875rem] font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white/90"
             >
               {d.name}
             </span>
@@ -66,25 +72,25 @@ export function ProfessionalCard({ person }: { person: Professional }) {
         </div>
       </div>
 
-      <div className="mt-6">
-        <div className="grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-border/50 bg-border/50">
-          <div className="bg-surface px-3 py-2 text-center">
-            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-muted-foreground">Index</p>
-            <p className="mt-1 font-mono text-sm font-semibold text-foreground">{person.capabilityIndex}</p>
+      <div className="relative z-10 mt-6">
+        <div className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-white/5 bg-white/5">
+          <div className="bg-black/20 px-3 py-2.5 text-center backdrop-blur-md">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Index</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-white/90">{person.capabilityIndex}</p>
           </div>
-          <div className="bg-surface px-3 py-2 text-center">
-            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-muted-foreground">Proof</p>
-            <p className="mt-1 font-mono text-sm font-semibold text-foreground">{Math.round(person.proofRatio * 100)}%</p>
+          <div className="bg-black/20 px-3 py-2.5 text-center backdrop-blur-md">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Proof</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-white/90">{Math.round(person.proofRatio * 100)}%</p>
           </div>
-          <div className="bg-surface px-3 py-2 text-center">
-            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-muted-foreground">Attested</p>
-            <p className="mt-1 font-mono text-sm font-semibold text-foreground">{person.attestations}</p>
+          <div className="bg-black/20 px-3 py-2.5 text-center backdrop-blur-md">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Attested</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-white/90">{person.attestations}</p>
           </div>
         </div>
 
-        <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
+        <div className="mt-5 flex items-center justify-between text-xs text-white/50">
           <span className="inline-flex items-center gap-1.5 font-medium">
-            <MapPin className="size-3.5" aria-hidden />
+            <MapPin className="size-3.5 opacity-70" aria-hidden />
             {person.location}
           </span>
           <span className="inline-flex items-center gap-1.5 font-medium capitalize">
@@ -104,38 +110,53 @@ export function OrganizationCard({ org }: { org: Organization }) {
     <Link
       to="/app/organizations/$slug"
       params={{ slug: org.slug }}
-      className="surface-card lift group block p-5 focus-visible:outline-none"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] focus-visible:outline-none"
     >
-      <div className="flex items-start gap-3">
-        <Avatar initials={org.initials} tone="proof" />
-        <div className="min-w-0 flex-1">
-          <div className="flex min-w-0 items-center gap-2">
-            <h3 className="truncate font-sans text-base font-semibold tracking-tight">{org.name}</h3>
-            <VerificationBadge level={org.level} withLabel={false} />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
+
+      <div className="relative z-10">
+        <div className="flex items-start gap-4">
+          <Avatar initials={org.initials} tone="proof" />
+          <div className="min-w-0 flex-1 pt-0.5">
+            <div className="flex min-w-0 items-center gap-2">
+              <h3 className="truncate font-sans text-base font-semibold tracking-tight text-white/90 transition-colors group-hover:text-primary">
+                {org.name}
+              </h3>
+              <VerificationBadge level={org.level} withLabel={false} />
+            </div>
+            <p className="mt-0.5 truncate text-sm capitalize text-white/50">
+              {org.kind.replace("-", " ")} · founded {org.founded}
+            </p>
           </div>
-          <p className="mt-0.5 truncate text-sm capitalize text-muted-foreground">
-            {org.kind.replace("-", " ")} · founded {org.founded}
-          </p>
+        </div>
+        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-white/60">{org.summary}</p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {org.focus.slice(0, 3).map((f) => (
+            <span 
+              key={f} 
+              className="inline-flex items-center rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[0.6875rem] font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white/90"
+            >
+              {f}
+            </span>
+          ))}
         </div>
       </div>
-      <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{org.summary}</p>
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {org.focus.slice(0, 3).map((f) => (
-          <Tag key={f}>{f}</Tag>
-        ))}
-      </div>
-      <div className="mt-5 border-t border-border pt-4">
-        <ProofMeter value={org.trustIndex} label="Trust index" />
-      </div>
-      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5">
-          <Users className="size-3.5" aria-hidden />
-          {org.people.toLocaleString()} people
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <Globe2 className="size-3.5" aria-hidden />
-          {org.headquarters}
-        </span>
+      
+      <div className="relative z-10 mt-6">
+        <div className="rounded-xl border border-white/5 bg-black/20 p-4 backdrop-blur-md">
+          <ProofMeter value={org.trustIndex} label="Trust index" />
+        </div>
+        <div className="mt-5 flex items-center justify-between text-xs text-white/50">
+          <span className="inline-flex items-center gap-1.5 font-medium">
+            <Users className="size-3.5 opacity-70" aria-hidden />
+            {org.people.toLocaleString()} people
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-medium">
+            <Globe2 className="size-3.5 opacity-70" aria-hidden />
+            {org.headquarters}
+          </span>
+        </div>
       </div>
     </Link>
   );
@@ -146,42 +167,56 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
     <Link
       to="/app/opportunities/$id"
       params={{ id: opportunity.id }}
-      className="surface-card lift group block p-5 focus-visible:outline-none"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] focus-visible:outline-none"
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <p className="text-eyebrow">{opportunity.organization}</p>
-          <h3 className="mt-1.5 truncate font-sans text-base font-semibold tracking-tight">{opportunity.title}</h3>
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
+
+      <div className="relative z-10">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">{opportunity.organization}</p>
+            <h3 className="mt-1.5 truncate font-sans text-base font-semibold tracking-tight text-white/90 transition-colors group-hover:text-primary">
+              {opportunity.title}
+            </h3>
+          </div>
+          <div className="shrink-0 text-right">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Match</p>
+            <p className="mt-1 font-mono text-lg font-semibold text-primary">{opportunity.matchScore}%</p>
+          </div>
         </div>
-        <div className="shrink-0 text-right">
-          <p className="text-eyebrow">Match</p>
-          <p className="text-data mt-1 text-lg font-semibold text-primary">{opportunity.matchScore}%</p>
+
+        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-white/60">{opportunity.summary}</p>
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          <span className="inline-flex items-center rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[0.6875rem] font-medium capitalize text-white/60 transition-colors hover:bg-white/10 hover:text-white/90">{opportunity.mode}</span>
+          {opportunity.requiredDomains.map((d) => (
+            <span 
+              key={d} 
+              className="inline-flex items-center rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[0.6875rem] font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white/90"
+            >
+              {d}
+            </span>
+          ))}
         </div>
       </div>
 
-      <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{opportunity.summary}</p>
-
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        <Tag className="capitalize">{opportunity.mode}</Tag>
-        {opportunity.requiredDomains.map((d) => (
-          <Tag key={d}>{d}</Tag>
-        ))}
-      </div>
-
-      <div className="mt-5 grid grid-cols-2 gap-4 border-t border-border pt-4 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5 truncate">
-          <MapPin className="size-3.5 shrink-0" aria-hidden />
-          {opportunity.location}
-        </span>
-        <span className="inline-flex items-center gap-1.5 truncate">
-          <FileCheck2 className="size-3.5 shrink-0" aria-hidden />
-          Proof ≥ {opportunity.proofThreshold}
-        </span>
-        <span className="text-data truncate text-foreground">{opportunity.compensation}</span>
-        <span className="inline-flex items-center gap-1.5 truncate">
-          <Clock className="size-3.5 shrink-0" aria-hidden />
-          closes {opportunity.closesAt}
-        </span>
+      <div className="relative z-10 mt-6">
+        <div className="grid grid-cols-2 gap-4 rounded-xl border border-white/5 bg-black/20 p-4 text-xs font-medium text-white/50 backdrop-blur-md">
+          <span className="inline-flex items-center gap-1.5 truncate">
+            <MapPin className="size-3.5 shrink-0 opacity-70" aria-hidden />
+            {opportunity.location}
+          </span>
+          <span className="inline-flex items-center gap-1.5 truncate">
+            <FileCheck2 className="size-3.5 shrink-0 opacity-70" aria-hidden />
+            Proof ≥ {opportunity.proofThreshold}
+          </span>
+          <span className="truncate text-white/90">{opportunity.compensation}</span>
+          <span className="inline-flex items-center gap-1.5 truncate">
+            <Clock className="size-3.5 shrink-0 opacity-70" aria-hidden />
+            closes {opportunity.closesAt}
+          </span>
+        </div>
       </div>
     </Link>
   );
@@ -196,30 +231,40 @@ const PROJECT_TONE: Record<Project["status"], "verified" | "signal" | "proof" | 
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="surface-card lift p-5">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <p className="text-eyebrow">{project.organization}</p>
-          <h3 className="mt-1.5 truncate font-sans text-base font-semibold tracking-tight">{project.name}</h3>
+    <article className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
+
+      <div className="relative z-10">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">{project.organization}</p>
+            <h3 className="mt-1.5 truncate font-sans text-base font-semibold tracking-tight text-white/90 transition-colors group-hover:text-primary">
+              {project.name}
+            </h3>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/5 bg-black/20 px-2.5 py-1 text-[0.6875rem] font-medium capitalize text-white/60">
+            <StatusDot tone={PROJECT_TONE[project.status]} pulse={project.status === "active"} />
+            {project.status}
+          </span>
         </div>
-        <span className="inline-flex shrink-0 items-center gap-1.5 text-xs capitalize text-muted-foreground">
-          <StatusDot tone={PROJECT_TONE[project.status]} pulse={project.status === "active"} />
-          {project.status}
-        </span>
+        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-white/60">{project.summary}</p>
       </div>
-      <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
-      <div className="mt-5">
-        <ProofMeter value={project.progress} label="Progress" />
-      </div>
-      <div className="mt-4 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5">
-          <Users className="size-3.5" aria-hidden />
-          {project.contributors} contributors
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <FileCheck2 className="size-3.5" aria-hidden />
-          {project.evidenceArtifacts} artefacts
-        </span>
+
+      <div className="relative z-10 mt-6">
+        <div className="rounded-xl border border-white/5 bg-black/20 p-4 backdrop-blur-md">
+          <ProofMeter value={project.progress} label="Progress" />
+        </div>
+        <div className="mt-5 flex items-center justify-between text-xs text-white/50">
+          <span className="inline-flex items-center gap-1.5 font-medium">
+            <Users className="size-3.5 opacity-70" aria-hidden />
+            {project.contributors} contributors
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-medium">
+            <FileCheck2 className="size-3.5 opacity-70" aria-hidden />
+            {project.evidenceArtifacts} artefacts
+          </span>
+        </div>
       </div>
     </article>
   );
@@ -227,35 +272,45 @@ export function ProjectCard({ project }: { project: Project }) {
 
 export function AssetCard({ asset }: { asset: AIAsset }) {
   return (
-    <article className="surface-card lift p-5">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex min-w-0 items-center gap-2">
-            <h3 className="truncate font-sans text-base font-semibold tracking-tight">{asset.name}</h3>
-            <VerificationBadge level={asset.level} withLabel={false} />
+    <article className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />
+      <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
+
+      <div className="relative z-10">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1 pt-0.5">
+            <div className="flex min-w-0 items-center gap-2">
+              <h3 className="truncate font-sans text-base font-semibold tracking-tight text-white/90 transition-colors group-hover:text-primary">
+                {asset.name}
+              </h3>
+              <VerificationBadge level={asset.level} withLabel={false} />
+            </div>
+            <p className="mt-0.5 truncate text-sm text-white/50">
+              {asset.owner} · {asset.license}
+            </p>
           </div>
-          <p className="mt-0.5 truncate text-sm text-muted-foreground">
-            {asset.owner} · {asset.license}
-          </p>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[0.6875rem] font-medium capitalize text-white/60">
+            <Boxes className="size-3.5 opacity-70" aria-hidden />
+            {asset.category}
+          </span>
         </div>
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-[0.6875rem] capitalize text-muted-foreground">
-          <Boxes className="size-3.5" aria-hidden />
-          {asset.category}
-        </span>
+        <p className="mt-5 line-clamp-2 text-sm leading-relaxed text-white/60">{asset.summary}</p>
       </div>
-      <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{asset.summary}</p>
-      <div className="mt-5 grid grid-cols-3 gap-3 border-t border-border pt-4">
-        <div>
-          <p className="text-eyebrow">Evals</p>
-          <p className="text-data mt-1 text-sm font-semibold">{asset.evaluations.toLocaleString()}</p>
-        </div>
-        <div>
-          <p className="text-eyebrow">Adoption</p>
-          <p className="text-data mt-1 text-sm font-semibold">{asset.adoption}%</p>
-        </div>
-        <div>
-          <p className="text-eyebrow">Latency</p>
-          <p className="text-data mt-1 text-sm font-semibold">{asset.latencyMs ? `${asset.latencyMs}ms` : "—"}</p>
+
+      <div className="relative z-10 mt-6">
+        <div className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-white/5 bg-white/5">
+          <div className="bg-black/20 px-3 py-2.5 text-center backdrop-blur-md">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Evals</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-white/90">{asset.evaluations.toLocaleString()}</p>
+          </div>
+          <div className="bg-black/20 px-3 py-2.5 text-center backdrop-blur-md">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Adoption</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-white/90">{asset.adoption}%</p>
+          </div>
+          <div className="bg-black/20 px-3 py-2.5 text-center backdrop-blur-md">
+            <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-white/40">Latency</p>
+            <p className="mt-1 font-mono text-sm font-semibold text-white/90">{asset.latencyMs ? `${asset.latencyMs}ms` : "—"}</p>
+          </div>
         </div>
       </div>
     </article>

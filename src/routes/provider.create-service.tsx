@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Check, Cloud, Key, Type, Plus, Lock } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Cloud, Key, Type, Plus, Lock } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";

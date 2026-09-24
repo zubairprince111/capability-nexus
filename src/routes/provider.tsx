@@ -13,7 +13,6 @@ import {
 import { Wordmark } from "@/components/brand/logo";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/site/site-chrome"; // We'll adapt theme toggle if needed
 
 export const Route = createFileRoute("/provider")({
   component: ProviderLayout,

@@ -1,16 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-
-import { WorldCapabilityField } from "@/components/landing/world-capability-field";
-import {
-  ClosingInvitation,
-  LandingHero,
-  LiveStatistics,
-  ProductPreview,
-  ScrollStory,
-  VerificationLadder,
-} from "@/components/landing/sections";
-import { SectionHeading } from "@/components/system/primitives";
-import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
+import { AI5KHero } from "@/components/landing/ai5k-hero";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,12 +8,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "AI5K is the global operating system for verified AI capability: inspectable evidence for every professional, organisation, project and model.",
+          "AI5K is the verified global AI capability network: proof for every professional, organization, project and model.",
       },
       { property: "og:title", content: "AI5K — Verified AI capability, proven not claimed" },
       {
         property: "og:description",
-        content: "Inspectable evidence for every AI professional, organisation, project and model.",
+        content: "Inspectable evidence for every AI professional, organization, project and model.",
       },
     ],
   }),
@@ -33,18 +22,11 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-dvh bg-background">
-      <SiteHeader />
+    <div className="min-h-dvh bg-black text-white">
       <main>
-        <LandingHero />
-        <LiveStatistics />
-        <ScrollStory />
-        <VerificationLadder />
-        <ProductPreview />
-
-        <ClosingInvitation />
+        <AI5KHero />
       </main>
-      <SiteFooter />
     </div>
   );
 }
+

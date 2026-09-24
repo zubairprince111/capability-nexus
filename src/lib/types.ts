@@ -239,7 +239,153 @@ export interface SessionUser {
   name: string;
   handle: string;
   initials: string;
-  role: "professional" | "organization" | "admin";
+  role: AppRole;
   capabilityIndex: number;
   level: VerificationLevel;
+}
+
+export type AppRole = "professional" | "organization" | "buyer" | "admin";
+
+export type AuditState = "pending" | "verified" | "rejected" | "needs-clarification" | "expired";
+
+export type DetailedEvidenceType =
+  | "self-declared"
+  | "project-demonstrated"
+  | "client-verified"
+  | "assessed"
+  | "certification-backed"
+  | "organization-endorsed"
+  | "peer-endorsed";
+
+export interface EvidenceItem {
+  id: ID;
+  title: string;
+  kind: EvidenceKind;
+  evidenceType: DetailedEvidenceType;
+  source: string;
+  verificationStatus: AuditState;
+  verifiedAt: string | null;
+  relatedCapability: string;
+  auditState: string;
+  summary: string;
+}
+
+export interface DeliveryPodMember {
+  id: ID;
+  name: string;
+  role: string;
+  avatarInitials: string;
+  capabilityContribution: string;
+  capacityPercentage: number;
+}
+
+export interface DeliveryPod {
+  id: ID;
+  name: string;
+  organizationId: ID;
+  targetOutcome: string;
+  members: DeliveryPodMember[];
+  capabilityCoverage: number; // 0-100
+  hourlyRate: string;
+  status: "draft" | "active" | "committed" | "archived";
+}
+
+export interface BuyerRequirement {
+  id: ID;
+  title: string;
+  problem: string;
+  industry: string;
+  requiredCapabilities: string[];
+  expectedOutcome: string;
+  timeline: string;
+  budget: string;
+  securityRequirements: string[];
+  existingSystems: string;
+  status: "draft" | "submitted" | "matching" | "proposals-received" | "contracted";
+  createdAt: string;
+}
+
+export interface MatchReason {
+  label: string;
+  evidenceCount: number;
+  detail: string;
+}
+
+export interface ExplainableMatch {
+  id: ID;
+  requirementId: ID;
+  targetId: ID;
+  targetType: "professional" | "organization" | "delivery-pod" | "service";
+  name: string;
+  headline: string;
+  score: number; // 0-100
+  reasons: MatchReason[];
+  relevantProjects: string[];
+  availability: string;
+  estimatedRate: string;
+}
+
+export interface ProposalItem {
+  id: ID;
+  opportunityId: ID;
+  buyerName: string;
+  title: string;
+  providerName: string;
+  providerType: "professional" | "organization";
+  recommendedTeam: string[];
+  evidenceUsed: string[];
+  scope: string;
+  deliverables: { title: string; timeline: string }[];
+  timeline: string;
+  pricing: { type: "fixed" | "hourly" | "milestone"; total: string };
+  risks: string[];
+  status: "draft" | "needs-review" | "approved" | "sent" | "accepted" | "declined";
+  createdAt: string;
+}
+
+export interface Milestone {
+  id: ID;
+  title: string;
+  amount: string;
+  dueDate: string;
+  status: "pending" | "funded" | "in-delivery" | "submitted" | "approved" | "paid";
+}
+
+export interface ContractRecord {
+  id: ID;
+  proposalId: ID;
+  title: string;
+  buyerName: string;
+  providerName: string;
+  scope: string;
+  milestones: Milestone[];
+  totalValue: string;
+  paymentTerms: string;
+  status: "draft" | "sent" | "signed" | "active" | "completed" | "disputed";
+  signedAt: string | null;
+}
+
+export interface PaymentRecord {
+  id: ID;
+  contractId: ID;
+  milestoneTitle: string;
+  grossAmount: number;
+  platformFee: number;
+  netAmount: number;
+  status: "pending" | "processing" | "paid" | "failed" | "disputed";
+  createdAt: string;
+}
+
+export type ReviewKind = "verified-review" | "imported-testimonial" | "organization-endorsement" | "peer-endorsement";
+
+export interface VerifiedReview {
+  id: ID;
+  engagementId: ID;
+  reviewerName: string;
+  reviewerOrganization: string;
+  kind: ReviewKind;
+  rating: number; // 1-5
+  comment: string;
+  verifiedAt: string;
+  projectTitle: string;
 }

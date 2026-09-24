@@ -1,15 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-
 import { PageTransition } from "@/components/motion/primitives";
-import { EmptyState, SectionHeading } from "@/components/system/primitives";
+import { AdminVerificationQueue } from "@/components/admin/admin-verification-queue";
 
 export const Route = createFileRoute("/app/admin")({
   head: () => ({
     meta: [
-      { title: "Admin — AI5K" },
-      { name: "description", content: "Audit trail and registry governance." },
-      { property: "og:title", content: "Admin — AI5K" },
-      { property: "og:description", content: "Audit trail and registry governance." },
+      { title: "Admin & Operations — AI5K Network Governance" },
+      { name: "description", content: "Evidence review, proof verification, and registry governance." },
+      { property: "og:title", content: "Admin & Operations — AI5K Network Governance" },
+      { property: "og:description", content: "Evidence review, proof verification, and registry governance." },
     ],
   }),
   component: Admin,
@@ -17,9 +16,8 @@ export const Route = createFileRoute("/app/admin")({
 
 function Admin() {
   return (
-    <PageTransition className="space-y-8">
-      <SectionHeading eyebrow="Admin" title="Admin" description="Audit trail and registry governance." />
-      <EmptyState title="Nothing verified here yet" description="Evidence for this surface will appear as soon as it is attested." />
+    <PageTransition>
+      <AdminVerificationQueue />
     </PageTransition>
   );
 }

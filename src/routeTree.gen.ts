@@ -13,8 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as DocsRouteImport } from './routes/docs'
+import { Route as ManifestoRouteImport } from './routes/manifesto'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProviderRouteImport } from './routes/provider'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
@@ -33,8 +36,19 @@ import { Route as CheckoutServiceIdRouteImport } from './routes/checkout.$servic
 import { Route as ProviderIndexRouteImport } from './routes/provider.index'
 import { Route as ProviderCreateServiceRouteImport } from './routes/provider.create-service'
 import { Route as ProviderLogsRouteImport } from './routes/provider.logs'
+import { Route as AppAdminVerificationRouteImport } from './routes/app.admin.verification'
+import { Route as AppBuyerContractsRouteImport } from './routes/app.buyer.contracts'
+import { Route as AppBuyerIntakeRouteImport } from './routes/app.buyer.intake'
+import { Route as AppBuyerMatchesRouteImport } from './routes/app.buyer.matches'
+import { Route as AppBuyerPaymentsRouteImport } from './routes/app.buyer.payments'
+import { Route as AppBuyerProposalsRouteImport } from './routes/app.buyer.proposals'
+import { Route as AppBuyerRequestsRouteImport } from './routes/app.buyer.requests'
+import { Route as AppBuyerReviewsRouteImport } from './routes/app.buyer.reviews'
+import { Route as AppBuyerSavedRouteImport } from './routes/app.buyer.saved'
 import { Route as AppOpportunitiesIndexRouteImport } from './routes/app.opportunities.index'
 import { Route as AppOpportunitiesIdRouteImport } from './routes/app.opportunities.$id'
+import { Route as AppOrganizationOverviewRouteImport } from './routes/app.organization.overview'
+import { Route as AppOrganizationPodsRouteImport } from './routes/app.organization.pods'
 import { Route as AppOrganizationsIndexRouteImport } from './routes/app.organizations.index'
 import { Route as AppOrganizationsSlugRouteImport } from './routes/app.organizations.$slug'
 import { Route as AppProfessionalsIndexRouteImport } from './routes/app.professionals.index'
@@ -60,14 +74,29 @@ const DocsRoute = DocsRouteImport.update({
   path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManifestoRoute = ManifestoRouteImport.update({
+  id: '/manifesto',
+  path: '/manifesto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProviderRoute = ProviderRouteImport.update({
   id: '/provider',
   path: '/provider',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -160,6 +189,51 @@ const ProviderLogsRoute = ProviderLogsRouteImport.update({
   path: '/logs',
   getParentRoute: () => ProviderRoute,
 } as any)
+const AppAdminVerificationRoute = AppAdminVerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppBuyerContractsRoute = AppBuyerContractsRouteImport.update({
+  id: '/buyer/contracts',
+  path: '/buyer/contracts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerIntakeRoute = AppBuyerIntakeRouteImport.update({
+  id: '/buyer/intake',
+  path: '/buyer/intake',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerMatchesRoute = AppBuyerMatchesRouteImport.update({
+  id: '/buyer/matches',
+  path: '/buyer/matches',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerPaymentsRoute = AppBuyerPaymentsRouteImport.update({
+  id: '/buyer/payments',
+  path: '/buyer/payments',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerProposalsRoute = AppBuyerProposalsRouteImport.update({
+  id: '/buyer/proposals',
+  path: '/buyer/proposals',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerRequestsRoute = AppBuyerRequestsRouteImport.update({
+  id: '/buyer/requests',
+  path: '/buyer/requests',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerReviewsRoute = AppBuyerReviewsRouteImport.update({
+  id: '/buyer/reviews',
+  path: '/buyer/reviews',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuyerSavedRoute = AppBuyerSavedRouteImport.update({
+  id: '/buyer/saved',
+  path: '/buyer/saved',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppOpportunitiesIndexRoute = AppOpportunitiesIndexRouteImport.update({
   id: '/opportunities/',
   path: '/opportunities/',
@@ -168,6 +242,16 @@ const AppOpportunitiesIndexRoute = AppOpportunitiesIndexRouteImport.update({
 const AppOpportunitiesIdRoute = AppOpportunitiesIdRouteImport.update({
   id: '/opportunities/$id',
   path: '/opportunities/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrganizationOverviewRoute = AppOrganizationOverviewRouteImport.update({
+  id: '/organization/overview',
+  path: '/organization/overview',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrganizationPodsRoute = AppOrganizationPodsRouteImport.update({
+  id: '/organization/pods',
+  path: '/organization/pods',
   getParentRoute: () => AppRoute,
 } as any)
 const AppOrganizationsIndexRoute = AppOrganizationsIndexRouteImport.update({
@@ -196,9 +280,12 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
   '/docs': typeof DocsRoute
+  '/manifesto': typeof ManifestoRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/provider': typeof ProviderRouteWithChildren
-  '/app/admin': typeof AppAdminRoute
+  '/terms': typeof TermsRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/community': typeof AppCommunityRoute
@@ -216,7 +303,18 @@ export interface FileRoutesByFullPath {
   '/provider/logs': typeof ProviderLogsRoute
   '/app/': typeof AppIndexRoute
   '/provider/': typeof ProviderIndexRoute
+  '/app/admin/verification': typeof AppAdminVerificationRoute
+  '/app/buyer/contracts': typeof AppBuyerContractsRoute
+  '/app/buyer/intake': typeof AppBuyerIntakeRoute
+  '/app/buyer/matches': typeof AppBuyerMatchesRoute
+  '/app/buyer/payments': typeof AppBuyerPaymentsRoute
+  '/app/buyer/proposals': typeof AppBuyerProposalsRoute
+  '/app/buyer/requests': typeof AppBuyerRequestsRoute
+  '/app/buyer/reviews': typeof AppBuyerReviewsRoute
+  '/app/buyer/saved': typeof AppBuyerSavedRoute
   '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
+  '/app/organization/overview': typeof AppOrganizationOverviewRoute
+  '/app/organization/pods': typeof AppOrganizationPodsRoute
   '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
   '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
   '/app/opportunities/': typeof AppOpportunitiesIndexRoute
@@ -227,8 +325,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/docs': typeof DocsRoute
+  '/manifesto': typeof ManifestoRoute
   '/pricing': typeof PricingRoute
-  '/app/admin': typeof AppAdminRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/community': typeof AppCommunityRoute
@@ -246,7 +347,18 @@ export interface FileRoutesByTo {
   '/provider/logs': typeof ProviderLogsRoute
   '/app': typeof AppIndexRoute
   '/provider': typeof ProviderIndexRoute
+  '/app/admin/verification': typeof AppAdminVerificationRoute
+  '/app/buyer/contracts': typeof AppBuyerContractsRoute
+  '/app/buyer/intake': typeof AppBuyerIntakeRoute
+  '/app/buyer/matches': typeof AppBuyerMatchesRoute
+  '/app/buyer/payments': typeof AppBuyerPaymentsRoute
+  '/app/buyer/proposals': typeof AppBuyerProposalsRoute
+  '/app/buyer/requests': typeof AppBuyerRequestsRoute
+  '/app/buyer/reviews': typeof AppBuyerReviewsRoute
+  '/app/buyer/saved': typeof AppBuyerSavedRoute
   '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
+  '/app/organization/overview': typeof AppOrganizationOverviewRoute
+  '/app/organization/pods': typeof AppOrganizationPodsRoute
   '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
   '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
   '/app/opportunities': typeof AppOpportunitiesIndexRoute
@@ -259,9 +371,12 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
   '/docs': typeof DocsRoute
+  '/manifesto': typeof ManifestoRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/provider': typeof ProviderRouteWithChildren
-  '/app/admin': typeof AppAdminRoute
+  '/terms': typeof TermsRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/assets': typeof AppAssetsRoute
   '/app/community': typeof AppCommunityRoute
@@ -279,7 +394,18 @@ export interface FileRoutesById {
   '/provider/logs': typeof ProviderLogsRoute
   '/app/': typeof AppIndexRoute
   '/provider/': typeof ProviderIndexRoute
+  '/app/admin/verification': typeof AppAdminVerificationRoute
+  '/app/buyer/contracts': typeof AppBuyerContractsRoute
+  '/app/buyer/intake': typeof AppBuyerIntakeRoute
+  '/app/buyer/matches': typeof AppBuyerMatchesRoute
+  '/app/buyer/payments': typeof AppBuyerPaymentsRoute
+  '/app/buyer/proposals': typeof AppBuyerProposalsRoute
+  '/app/buyer/requests': typeof AppBuyerRequestsRoute
+  '/app/buyer/reviews': typeof AppBuyerReviewsRoute
+  '/app/buyer/saved': typeof AppBuyerSavedRoute
   '/app/opportunities/$id': typeof AppOpportunitiesIdRoute
+  '/app/organization/overview': typeof AppOrganizationOverviewRoute
+  '/app/organization/pods': typeof AppOrganizationPodsRoute
   '/app/organizations/$slug': typeof AppOrganizationsSlugRoute
   '/app/professionals/$handle': typeof AppProfessionalsHandleRoute
   '/app/opportunities/': typeof AppOpportunitiesIndexRoute
@@ -293,8 +419,11 @@ export interface FileRouteTypes {
     | '/about'
     | '/app'
     | '/docs'
+    | '/manifesto'
     | '/pricing'
+    | '/privacy'
     | '/provider'
+    | '/terms'
     | '/app/admin'
     | '/app/analytics'
     | '/app/assets'
@@ -313,7 +442,18 @@ export interface FileRouteTypes {
     | '/provider/logs'
     | '/app/'
     | '/provider/'
+    | '/app/admin/verification'
+    | '/app/buyer/contracts'
+    | '/app/buyer/intake'
+    | '/app/buyer/matches'
+    | '/app/buyer/payments'
+    | '/app/buyer/proposals'
+    | '/app/buyer/requests'
+    | '/app/buyer/reviews'
+    | '/app/buyer/saved'
     | '/app/opportunities/$id'
+    | '/app/organization/overview'
+    | '/app/organization/pods'
     | '/app/organizations/$slug'
     | '/app/professionals/$handle'
     | '/app/opportunities/'
@@ -324,7 +464,10 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/docs'
+    | '/manifesto'
     | '/pricing'
+    | '/privacy'
+    | '/terms'
     | '/app/admin'
     | '/app/analytics'
     | '/app/assets'
@@ -343,7 +486,18 @@ export interface FileRouteTypes {
     | '/provider/logs'
     | '/app'
     | '/provider'
+    | '/app/admin/verification'
+    | '/app/buyer/contracts'
+    | '/app/buyer/intake'
+    | '/app/buyer/matches'
+    | '/app/buyer/payments'
+    | '/app/buyer/proposals'
+    | '/app/buyer/requests'
+    | '/app/buyer/reviews'
+    | '/app/buyer/saved'
     | '/app/opportunities/$id'
+    | '/app/organization/overview'
+    | '/app/organization/pods'
     | '/app/organizations/$slug'
     | '/app/professionals/$handle'
     | '/app/opportunities'
@@ -355,8 +509,11 @@ export interface FileRouteTypes {
     | '/about'
     | '/app'
     | '/docs'
+    | '/manifesto'
     | '/pricing'
+    | '/privacy'
     | '/provider'
+    | '/terms'
     | '/app/admin'
     | '/app/analytics'
     | '/app/assets'
@@ -375,7 +532,18 @@ export interface FileRouteTypes {
     | '/provider/logs'
     | '/app/'
     | '/provider/'
+    | '/app/admin/verification'
+    | '/app/buyer/contracts'
+    | '/app/buyer/intake'
+    | '/app/buyer/matches'
+    | '/app/buyer/payments'
+    | '/app/buyer/proposals'
+    | '/app/buyer/requests'
+    | '/app/buyer/reviews'
+    | '/app/buyer/saved'
     | '/app/opportunities/$id'
+    | '/app/organization/overview'
+    | '/app/organization/pods'
     | '/app/organizations/$slug'
     | '/app/professionals/$handle'
     | '/app/opportunities/'
@@ -388,8 +556,11 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AppRoute: typeof AppRouteWithChildren
   DocsRoute: typeof DocsRoute
+  ManifestoRoute: typeof ManifestoRoute
   PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProviderRoute: typeof ProviderRouteWithChildren
+  TermsRoute: typeof TermsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   CheckoutServiceIdRoute: typeof CheckoutServiceIdRoute
@@ -425,6 +596,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/manifesto': {
+      id: '/manifesto'
+      path: '/manifesto'
+      fullPath: '/manifesto'
+      preLoaderRoute: typeof ManifestoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -432,11 +610,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/provider': {
       id: '/provider'
       path: '/provider'
       fullPath: '/provider'
       preLoaderRoute: typeof ProviderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -565,6 +757,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProviderLogsRouteImport
       parentRoute: typeof ProviderRoute
     }
+    '/app/admin/verification': {
+      id: '/app/admin/verification'
+      path: '/verification'
+      fullPath: '/app/admin/verification'
+      preLoaderRoute: typeof AppAdminVerificationRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/buyer/contracts': {
+      id: '/app/buyer/contracts'
+      path: '/buyer/contracts'
+      fullPath: '/app/buyer/contracts'
+      preLoaderRoute: typeof AppBuyerContractsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/intake': {
+      id: '/app/buyer/intake'
+      path: '/buyer/intake'
+      fullPath: '/app/buyer/intake'
+      preLoaderRoute: typeof AppBuyerIntakeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/matches': {
+      id: '/app/buyer/matches'
+      path: '/buyer/matches'
+      fullPath: '/app/buyer/matches'
+      preLoaderRoute: typeof AppBuyerMatchesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/payments': {
+      id: '/app/buyer/payments'
+      path: '/buyer/payments'
+      fullPath: '/app/buyer/payments'
+      preLoaderRoute: typeof AppBuyerPaymentsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/proposals': {
+      id: '/app/buyer/proposals'
+      path: '/buyer/proposals'
+      fullPath: '/app/buyer/proposals'
+      preLoaderRoute: typeof AppBuyerProposalsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/requests': {
+      id: '/app/buyer/requests'
+      path: '/buyer/requests'
+      fullPath: '/app/buyer/requests'
+      preLoaderRoute: typeof AppBuyerRequestsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/reviews': {
+      id: '/app/buyer/reviews'
+      path: '/buyer/reviews'
+      fullPath: '/app/buyer/reviews'
+      preLoaderRoute: typeof AppBuyerReviewsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buyer/saved': {
+      id: '/app/buyer/saved'
+      path: '/buyer/saved'
+      fullPath: '/app/buyer/saved'
+      preLoaderRoute: typeof AppBuyerSavedRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/opportunities/': {
       id: '/app/opportunities/'
       path: '/opportunities'
@@ -577,6 +832,20 @@ declare module '@tanstack/react-router' {
       path: '/opportunities/$id'
       fullPath: '/app/opportunities/$id'
       preLoaderRoute: typeof AppOpportunitiesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/organization/overview': {
+      id: '/app/organization/overview'
+      path: '/organization/overview'
+      fullPath: '/app/organization/overview'
+      preLoaderRoute: typeof AppOrganizationOverviewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/organization/pods': {
+      id: '/app/organization/pods'
+      path: '/organization/pods'
+      fullPath: '/app/organization/pods'
+      preLoaderRoute: typeof AppOrganizationPodsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/organizations/': {
@@ -610,8 +879,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppAdminRouteChildren {
+  AppAdminVerificationRoute: typeof AppAdminVerificationRoute
+}
+
+const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminVerificationRoute: AppAdminVerificationRoute,
+}
+
+const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
+  AppAdminRouteChildren,
+)
+
 interface AppRouteChildren {
-  AppAdminRoute: typeof AppAdminRoute
+  AppAdminRoute: typeof AppAdminRouteWithChildren
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppAssetsRoute: typeof AppAssetsRoute
   AppCommunityRoute: typeof AppCommunityRoute
@@ -623,7 +904,17 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   AppUniverseRoute: typeof AppUniverseRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppBuyerContractsRoute: typeof AppBuyerContractsRoute
+  AppBuyerIntakeRoute: typeof AppBuyerIntakeRoute
+  AppBuyerMatchesRoute: typeof AppBuyerMatchesRoute
+  AppBuyerPaymentsRoute: typeof AppBuyerPaymentsRoute
+  AppBuyerProposalsRoute: typeof AppBuyerProposalsRoute
+  AppBuyerRequestsRoute: typeof AppBuyerRequestsRoute
+  AppBuyerReviewsRoute: typeof AppBuyerReviewsRoute
+  AppBuyerSavedRoute: typeof AppBuyerSavedRoute
   AppOpportunitiesIdRoute: typeof AppOpportunitiesIdRoute
+  AppOrganizationOverviewRoute: typeof AppOrganizationOverviewRoute
+  AppOrganizationPodsRoute: typeof AppOrganizationPodsRoute
   AppOrganizationsSlugRoute: typeof AppOrganizationsSlugRoute
   AppProfessionalsHandleRoute: typeof AppProfessionalsHandleRoute
   AppOpportunitiesIndexRoute: typeof AppOpportunitiesIndexRoute
@@ -632,7 +923,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAdminRoute: AppAdminRoute,
+  AppAdminRoute: AppAdminRouteWithChildren,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppAssetsRoute: AppAssetsRoute,
   AppCommunityRoute: AppCommunityRoute,
@@ -644,7 +935,17 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   AppUniverseRoute: AppUniverseRoute,
   AppIndexRoute: AppIndexRoute,
+  AppBuyerContractsRoute: AppBuyerContractsRoute,
+  AppBuyerIntakeRoute: AppBuyerIntakeRoute,
+  AppBuyerMatchesRoute: AppBuyerMatchesRoute,
+  AppBuyerPaymentsRoute: AppBuyerPaymentsRoute,
+  AppBuyerProposalsRoute: AppBuyerProposalsRoute,
+  AppBuyerRequestsRoute: AppBuyerRequestsRoute,
+  AppBuyerReviewsRoute: AppBuyerReviewsRoute,
+  AppBuyerSavedRoute: AppBuyerSavedRoute,
   AppOpportunitiesIdRoute: AppOpportunitiesIdRoute,
+  AppOrganizationOverviewRoute: AppOrganizationOverviewRoute,
+  AppOrganizationPodsRoute: AppOrganizationPodsRoute,
   AppOrganizationsSlugRoute: AppOrganizationsSlugRoute,
   AppProfessionalsHandleRoute: AppProfessionalsHandleRoute,
   AppOpportunitiesIndexRoute: AppOpportunitiesIndexRoute,
@@ -675,8 +976,11 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AppRoute: AppRouteWithChildren,
   DocsRoute: DocsRoute,
+  ManifestoRoute: ManifestoRoute,
   PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ProviderRoute: ProviderRouteWithChildren,
+  TermsRoute: TermsRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   CheckoutServiceIdRoute: CheckoutServiceIdRoute,
