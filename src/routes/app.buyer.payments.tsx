@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageTransition } from "@/components/motion/primitives";
-import { MOCK_PAYMENTS } from "@/lib/services/ai5k-service";
-import { PaymentRecord } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
+import { paymentsQuery } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { CreditCard, DollarSign, CheckCircle2, ShieldCheck, ArrowUpRight } from "lucide-react";
 
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/app/buyer/payments")({
 });
 
 function PaymentsRoute() {
-  const [payments] = useState<PaymentRecord[]>(MOCK_PAYMENTS);
+  const { data: payments = [] } = useQuery(paymentsQuery());
 
   return (
     <PageTransition className="max-w-6xl mx-auto space-y-8">

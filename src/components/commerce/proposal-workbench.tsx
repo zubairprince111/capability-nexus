@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { MOCK_PROPOSALS } from "@/lib/services/ai5k-service";
-import { ProposalItem } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
+import { proposalsQuery } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { FileText, ShieldCheck, CheckCircle2, Clock, AlertTriangle, ArrowRight, FileCheck2, User, Building2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export function ProposalWorkbench() {
-  const [proposals, setProposals] = useState<ProposalItem[]>(MOCK_PROPOSALS);
+  const { data: proposals = [] } = useQuery(proposalsQuery());
 
   return (
     <div className="space-y-8">

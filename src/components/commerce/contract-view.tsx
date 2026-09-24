@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { MOCK_CONTRACTS, MOCK_PAYMENTS } from "@/lib/services/ai5k-service";
-import { ContractRecord, PaymentRecord } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
+import { contractsQuery, paymentsQuery } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, CheckCircle2, Lock, DollarSign, FileText, CreditCard, ArrowRight } from "lucide-react";
 
 export function ContractView() {
-  const [contracts] = useState<ContractRecord[]>(MOCK_CONTRACTS);
-  const [payments] = useState<PaymentRecord[]>(MOCK_PAYMENTS);
+  const { data: contracts = [] } = useQuery(contractsQuery());
+  const { data: payments = [] } = useQuery(paymentsQuery());
 
   return (
     <div className="space-y-8">

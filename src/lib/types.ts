@@ -389,3 +389,18 @@ export interface VerifiedReview {
   verifiedAt: string;
   projectTitle: string;
 }
+
+export interface MarketplaceListing {
+  id: string;
+  title: string;
+  category: "agent" | "service" | "expert" | "organization" | "pod";
+  headline: string;
+  description: string;
+  providerName: string;
+  priceBand: string;
+  verificationLevel: VerificationLevel;
+  proofSignals: string[];
+  capabilities: string[];
+  actionLabel: string;
+  actionTarget: string;
+}

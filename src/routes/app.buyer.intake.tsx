@@ -5,8 +5,8 @@ import { BuyerIntakeWizard } from "@/components/buyer/buyer-intake-wizard";
 export const Route = createFileRoute("/app/buyer/intake")({
   head: () => ({
     meta: [
-      { title: "What to Build? Intake — AI5K" },
-      { name: "description", content: "Describe AI requirements and discover verified delivery capabilities." },
+      { title: "Project Scope — AI5K" },
+      { name: "description", content: "Specify project requirements and discover verified delivery capabilities." },
     ],
   }),
   component: BuyerIntakeRoute,

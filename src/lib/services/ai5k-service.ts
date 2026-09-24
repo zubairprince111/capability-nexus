@@ -7,16 +7,65 @@ import {
   ExplainableMatch, 
   PaymentRecord, 
   ProposalItem, 
-  VerifiedReview 
+  VerifiedReview,
+  MarketplaceListing
 } from "@/lib/types";
 
-// Role workspace persistence key
+// Role workspace persistence keys
 const ROLE_KEY = "ai5k_current_role";
+const USER_ROLES_KEY = "ai5k_user_roles";
+
+export const getUserRoles = (): AppRole[] => {
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem(USER_ROLES_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+    const isAdmin = localStorage.getItem("ai5k_user_is_admin") === "true";
+    if (isAdmin) {
+      return ["professional", "organization", "buyer", "admin"];
+    }
+  }
+  return ["professional", "organization", "buyer"];
+};
+
+export const hasRole = (role: AppRole): boolean => {
+  return getUserRoles().includes(role);
+};
+
+export const hasAdminAccess = (): boolean => {
+  return hasRole("admin");
+};
+
+export const setUserAdminAccess = (isAdmin: boolean): void => {
+  if (typeof window !== "undefined") {
+    const currentRoles = getUserRoles();
+    let updated: AppRole[];
+    if (isAdmin) {
+      updated = Array.from(new Set([...currentRoles, "admin" as AppRole]));
+      localStorage.setItem("ai5k_user_is_admin", "true");
+    } else {
+      updated = currentRoles.filter((r) => r !== "admin");
+      localStorage.setItem("ai5k_user_is_admin", "false");
+      if (localStorage.getItem(ROLE_KEY) === "admin") {
+        localStorage.setItem(ROLE_KEY, "professional");
+      }
+    }
+    localStorage.setItem(USER_ROLES_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent("ai5k_role_change", { detail: getActiveRole() }));
+  }
+};
 
 export const getActiveRole = (): AppRole => {
   if (typeof window !== "undefined") {
     const saved = localStorage.getItem(ROLE_KEY) as AppRole | null;
     if (saved && ["professional", "organization", "buyer", "admin"].includes(saved)) {
+      if (saved === "admin" && !hasAdminAccess()) {
+        return "professional";
+      }
       return saved;
     }
   }
@@ -25,6 +74,9 @@ export const getActiveRole = (): AppRole => {
 
 export const setActiveRole = (role: AppRole): void => {
   if (typeof window !== "undefined") {
+    if (role === "admin" && !hasAdminAccess()) {
+      return;
+    }
     localStorage.setItem(ROLE_KEY, role);
     window.dispatchEvent(new CustomEvent("ai5k_role_change", { detail: role }));
   }
@@ -205,5 +257,93 @@ export const MOCK_VERIFIED_REVIEWS: VerifiedReview[] = [
     comment: "Exceptional expertise in TensorRT model quantization and CUDA kernel tuning. Reduced model latency by 4x.",
     verifiedAt: "2026-08-30",
     projectTitle: "Clinical Inference Engine",
+  },
+];
+
+// Mock Marketplace Listings
+export const MOCK_MARKETPLACE_LISTINGS: MarketplaceListing[] = [
+  {
+    id: "item-1",
+    title: "Autonomous Loan Underwriting Agent",
+    category: "agent",
+    headline: "Multi-modal financial document extraction & automated risk scoring.",
+    description: "Parses complex mortgage deeds, extracts PII with zero leak audit logs, and calculates debt-to-income ratios under 3 minutes.",
+    providerName: "Apex FinTech AI Labs",
+    priceBand: "From $1,200/mo API or $75k Custom Deploy",
+    verificationLevel: "attested",
+    proofSignals: ["4 Demonstrated RAG Projects", "SOC2 Type II Certified", "99.4% Extraction Precision"],
+    capabilities: ["RAG Systems", "PII Redaction", "vLLM Inference", "Autonomous Swarms"],
+    actionLabel: "Explore Agent",
+    actionTarget: "/app/buyer/matches",
+  },
+  {
+    id: "item-2",
+    title: "Mortgage AI Automation Pod",
+    category: "pod",
+    headline: "Pre-assembled 4-person pod specialized in FinTech automation.",
+    description: "Lead Agentic Architect, RAG Systems Engineer, Quantization Lead, and Security Specialist ready for 100% capacity deployment.",
+    providerName: "Apex AI Network",
+    priceBand: "$420/hr (Sprint Package)",
+    verificationLevel: "attested",
+    proofSignals: ["12 Verified Team Capabilities", "Tier-1 Bank Client Verification", "Immediate Capacity"],
+    capabilities: ["Agent Swarms", "Sparse-Dense Vector Search", "CUDA Tuning"],
+    actionLabel: "View Delivery Pod",
+    actionTarget: "/app/organization/pods",
+  },
+  {
+    id: "item-3",
+    title: "Enterprise RAG System Implementation",
+    category: "service",
+    headline: "End-to-end vector knowledge engine for internal company documents.",
+    description: "Includes hybrid sparse-dense indexing, document parsing, citation validation, hallucination benchmarks, and VPC deployment.",
+    providerName: "Dr. Elena Rostova & Team",
+    priceBand: "Starting at $45,000",
+    verificationLevel: "verified",
+    proofSignals: ["Sub-50ms HNSW Latency", "8 Deployed RAG Projects", "Replicated Benchmarks"],
+    capabilities: ["RAG Architecture", "vLLM Optimization", "Evaluation Framework"],
+    actionLabel: "Request Proposal",
+    actionTarget: "/app/buyer/intake",
+  },
+  {
+    id: "item-4",
+    title: "Dr. Elena Rostova",
+    category: "expert",
+    headline: "Principal Agentic AI Architect & Fine-Tuning Lead.",
+    description: "8+ years optimizing neural network inference, author of open evaluation benchmarks, cryptographically verified score 98.4/100.",
+    providerName: "Independent Specialist",
+    priceBand: "$250/hr (Advisory & Lead)",
+    verificationLevel: "attested",
+    proofSignals: ["Top 0.5% Capability Index", "14 Verified Repositories", "5 Peer Endorsements"],
+    capabilities: ["Agentic Workflows", "Model Quantization", "CUDA Tuning"],
+    actionLabel: "View Expert Profile",
+    actionTarget: "/app/professionals/elena-rostova",
+  },
+  {
+    id: "item-5",
+    title: "Clinical Decision Support RAG Pod",
+    category: "pod",
+    headline: "HIPAA-compliant clinical decision support and EHR vector indexing pod.",
+    description: "Specialized in medical paper parsing, PubMed vector indexing, and zero-hallucination benchmark verification.",
+    providerName: "BioNeuron Labs",
+    priceBand: "$380/hr",
+    verificationLevel: "verified",
+    proofSignals: ["HIPAA Audit Attested", "99.6% Medical Extraction", "Clinical Dataset Certified"],
+    capabilities: ["Healthcare AI", "EHR Vector Search", "LoRA Fine-tuning"],
+    actionLabel: "View Delivery Pod",
+    actionTarget: "/app/organization/pods",
+  },
+  {
+    id: "item-6",
+    title: "Customer Support Escalation Agent Swarm",
+    category: "agent",
+    headline: "Resolves 80%+ repetitive support tickets with human-in-the-loop escalation.",
+    description: "Connects Zendesk, Intercom, and internal Postgres data to answer queries with citation proof and automated escalation logs.",
+    providerName: "Automation Studio",
+    priceBand: "From $850/mo",
+    verificationLevel: "reviewed",
+    proofSignals: ["10,000+ Executed Ticket Logs", "Zero Plain-text Leak Audit", "4.9 Verified Review"],
+    capabilities: ["Support Agents", "Zendesk Integration", "API Workflows"],
+    actionLabel: "Explore Agent",
+    actionTarget: "/app/buyer/matches",
   },
 ];

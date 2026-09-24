@@ -11,7 +11,8 @@ import {
   AlertTriangle,
   FileCheck,
   Building2,
-  UserCheck
+  UserCheck,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -334,7 +335,7 @@ export function AdminVerificationQueue() {
                 </p>
               </div>
               <Button variant="ghost" size="sm" onClick={() => setActiveItem(null)} className="text-muted-foreground">
-                ✕
+                <X className="size-4" />
               </Button>
             </div>
 

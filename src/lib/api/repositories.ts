@@ -1,8 +1,22 @@
 import * as db from "../mock/data";
+import {
+  MOCK_DELIVERY_PODS,
+  MOCK_BUYER_REQUIREMENTS,
+  MOCK_EXPLAINABLE_MATCHES,
+  MOCK_PROPOSALS,
+  MOCK_CONTRACTS,
+  MOCK_PAYMENTS,
+  MOCK_VERIFIED_REVIEWS,
+  MOCK_MARKETPLACE_LISTINGS,
+} from "../services/ai5k-service";
 import type {
   AIAsset,
   AuditEvent,
+  BuyerRequirement,
   CommunitySignal,
+  ContractRecord,
+  DeliveryPod,
+  ExplainableMatch,
   LearningTrack,
   ListQuery,
   MessageThread,
@@ -11,11 +25,15 @@ import type {
   Opportunity,
   Organization,
   Paginated,
+  PaymentRecord,
   Professional,
   Project,
+  ProposalItem,
   SeriesPoint,
   SessionUser,
   UniverseGraph,
+  VerifiedReview,
+  MarketplaceListing,
 } from "../types";
 import { paginate, request } from "./transport";
 
@@ -148,4 +166,21 @@ export const communityRepository = {
 
 export const adminRepository = {
   audit: (): Promise<AuditEvent[]> => request(() => db.auditEvents, { latency: 200 }),
+};
+
+export const commerceRepository = {
+  proposals: (): Promise<ProposalItem[]> => request(() => MOCK_PROPOSALS, { latency: 150 }),
+  contracts: (): Promise<ContractRecord[]> => request(() => MOCK_CONTRACTS, { latency: 150 }),
+  payments: (): Promise<PaymentRecord[]> => request(() => MOCK_PAYMENTS, { latency: 150 }),
+  marketplaceListings: (): Promise<MarketplaceListing[]> => request(() => MOCK_MARKETPLACE_LISTINGS, { latency: 150 }),
+};
+
+export const buyerRepository = {
+  requirements: (): Promise<BuyerRequirement[]> => request(() => MOCK_BUYER_REQUIREMENTS, { latency: 150 }),
+  matches: (): Promise<ExplainableMatch[]> => request(() => MOCK_EXPLAINABLE_MATCHES, { latency: 150 }),
+  reviews: (): Promise<VerifiedReview[]> => request(() => MOCK_VERIFIED_REVIEWS, { latency: 150 }),
+};
+
+export const organizationServiceRepository = {
+  deliveryPods: (): Promise<DeliveryPod[]> => request(() => MOCK_DELIVERY_PODS, { latency: 150 }),
 };

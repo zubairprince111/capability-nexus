@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MOCK_BUYER_REQUIREMENTS } from "@/lib/services/ai5k-service";
-import { BuyerRequirement } from "@/lib/types";
+
 import { Sparkles, Target, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -32,15 +31,11 @@ export function BuyerIntakeWizard() {
       
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 font-mono text-xs uppercase tracking-wider">
-          <Sparkles className="size-3.5" />
-          <span>Buyer Capability Requisition Intake</span>
-        </div>
         <h1 className="text-3xl sm:text-4xl font-normal text-foreground tracking-tight">
-          What are you trying to build?
+          Project Requirements & Scope
         </h1>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto font-light leading-relaxed">
-          Describe your problem and security constraints. AI5K matches you with verified capabilities and proven delivery pods.
+          Specify your technical objectives and constraints to connect with verified providers and delivery pods.
         </p>
       </div>
 

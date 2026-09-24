@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AI5KHero } from "@/components/landing/ai5k-hero";
+import { SiteFooter } from "@/components/site/site-chrome";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,11 +23,11 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-dvh bg-black text-white">
-      <main>
+    <div className="min-h-dvh bg-black text-white flex flex-col justify-between">
+      <main className="flex-1">
         <AI5KHero />
       </main>
+      <SiteFooter />
     </div>
   );
 }
-

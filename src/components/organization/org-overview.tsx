@@ -12,7 +12,8 @@ import {
   Zap,
   ChevronRight,
   ExternalLink,
-  Lock
+  Lock,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -279,7 +280,9 @@ export function OrgOverview() {
           <div className="w-full max-w-md surface-card border border-border/90 shadow-2xl p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-border/80 pb-4">
               <h3 className="text-lg font-semibold text-foreground">Invite Team Contributor</h3>
-              <Button variant="ghost" size="sm" onClick={() => setShowInviteModal(false)}>✕</Button>
+              <Button variant="ghost" size="sm" onClick={() => setShowInviteModal(false)}>
+                <X className="size-4" />
+              </Button>
             </div>
 
             <form onSubmit={handleSendInvite} className="space-y-4 text-sm">

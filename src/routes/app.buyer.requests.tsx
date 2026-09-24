@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Plus, Sparkles, Orbit } from "lucide-react";
 import { PageTransition } from "@/components/motion/primitives";
 import { EmptyState, SectionHeading } from "@/components/system/primitives";
-import { MOCK_BUYER_REQUIREMENTS } from "@/lib/services/ai5k-service";
+import { useQuery } from "@tanstack/react-query";
+import { buyerRequirementsQuery } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,18 +18,18 @@ export const Route = createFileRoute("/app/buyer/requests")({
 });
 
 function BuyerRequestsRoute() {
-  const reqs = MOCK_BUYER_REQUIREMENTS;
+  const { data: reqs = [] } = useQuery(buyerRequirementsQuery());
 
   return (
     <PageTransition className="space-y-8">
       <SectionHeading
         eyebrow="Buyer Workspace"
-        title="My Capability Requisitions"
-        description="Structured problem statements submitted to the AI5K verified capability matching network."
+        title="My Project Requests"
+        description="Structured project scopes submitted to the AI5K verified capability matching network."
         action={
           <Button asChild className="bg-emerald-600 hover:bg-emerald-500 text-white">
             <Link to="/app/buyer/intake">
-              <Plus className="size-4 mr-2" /> New Requisition
+              <Plus className="size-4 mr-2" /> New Project Scope
             </Link>
           </Button>
         }
@@ -36,11 +37,11 @@ function BuyerRequestsRoute() {
 
       {reqs.length === 0 ? (
         <EmptyState
-          title="No Active Requisitions"
-          description="Submit what you are trying to build to receive explainable matches from verified providers and delivery pods."
+          title="No Active Project Requests"
+          description="Submit your project requirements to receive explainable matches from verified providers and delivery pods."
           action={
             <Button asChild className="bg-emerald-600 hover:bg-emerald-500 text-white">
-              <Link to="/app/buyer/intake">Start Intake</Link>
+              <Link to="/app/buyer/intake">Create Project Scope</Link>
             </Button>
           }
         />

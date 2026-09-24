@@ -10,6 +10,7 @@ export interface AI5KBrainProps {
   rotationYOffset?: number;
   positionXOffset?: number;
   onLoad?: () => void;
+  bgColor?: string;
 }
 
 // HELPER: Create bioluminescent soft radial particle dot texture
@@ -21,8 +22,8 @@ function createParticleTexture(): THREE.CanvasTexture {
   if (ctx) {
     const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
     gradient.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-    gradient.addColorStop(0.3, "rgba(110, 231, 183, 0.75)");
-    gradient.addColorStop(0.65, "rgba(20, 184, 166, 0.25)");
+    gradient.addColorStop(0.3, "rgba(16, 185, 129, 0.85)");
+    gradient.addColorStop(0.65, "rgba(13, 148, 136, 0.35)");
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 64, 64);
@@ -39,10 +40,12 @@ export function AI5KBrain({
   rotationYOffset = -Math.PI / 2, // Rotated for front/3-4 view
   positionXOffset = 3.2,
   onLoad,
+  bgColor = "#000000",
 }: AI5KBrainProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const currentPosXRef = useRef<number | null>(null);
+  // Initialize to the current prop value so the render loop lerps from here on frame 1
+  const currentPosXRef = useRef<number>(positionXOffset);
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -83,7 +86,7 @@ export function AI5KBrain({
 
     // --- 1. THREE.JS SCENE SETUP ---
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#000000");
+    scene.background = new THREE.Color(bgColor);
 
     const aspect = container.clientWidth / container.clientHeight;
     const camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 100);
@@ -118,7 +121,9 @@ export function AI5KBrain({
     // --- 3. BRAIN GROUP POSITION ---
     const isMobile = window.innerWidth < 768;
     const brainGroup = new THREE.Group();
-    brainGroup.position.set(isMobile ? 0 : positionXOffset, isMobile ? 0.2 : -0.15, 0);
+    // Always start at X=0 (center) — the render loop lerps to positionXOffset.
+    // This ensures the intro animation always begins with the brain in the center.
+    brainGroup.position.set(isMobile ? 0 : currentPosXRef.current, isMobile ? 0.2 : -0.15, 0);
     brainGroup.rotation.set(0, stateRef.current.rotationYOffset, 0);
     scene.add(brainGroup);
 
@@ -670,11 +675,7 @@ export function AI5KBrain({
 
       // Smooth position interpolation
       const targetX = isMobile ? 0 : st.positionXOffset;
-      if (currentPosXRef.current === null) {
-        currentPosXRef.current = targetX;
-      } else {
-        currentPosXRef.current += (targetX - currentPosXRef.current) * 0.018;
-      }
+      currentPosXRef.current += (targetX - currentPosXRef.current) * 0.045;
 
       brainGroup.position.set(currentPosXRef.current, isMobile ? 0.2 : -0.15, 0);
       brainGroup.rotation.set(0, st.rotationYOffset, 0);

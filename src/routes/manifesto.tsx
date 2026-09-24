@@ -20,7 +20,7 @@ export function Manifesto() {
       {/* Background Ambient Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#15846E]/10 blur-[150px] rounded-full pointer-events-none" />
       
-      <SiteHeader />
+      <SiteHeader variant="minimal" />
 
       <main className="flex-1 py-20 sm:py-28 relative z-10">
         <PageTransition className="max-w-4xl mx-auto px-6 lg:px-8">

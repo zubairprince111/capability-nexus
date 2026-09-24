@@ -11,12 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as DocsRouteImport } from './routes/docs'
+import { Route as ExpertsRouteImport } from './routes/experts'
 import { Route as ManifestoRouteImport } from './routes/manifesto'
+import { Route as OrganizationsRouteImport } from './routes/organizations'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProviderRouteImport } from './routes/provider'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
@@ -64,9 +69,19 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentsRoute = AgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsRoute = DocsRouteImport.update({
@@ -74,9 +89,19 @@ const DocsRoute = DocsRouteImport.update({
   path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExpertsRoute = ExpertsRouteImport.update({
+  id: '/experts',
+  path: '/experts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ManifestoRoute = ManifestoRouteImport.update({
   id: '/manifesto',
   path: '/manifesto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganizationsRoute = OrganizationsRouteImport.update({
+  id: '/organizations',
+  path: '/organizations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -92,6 +117,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const ProviderRoute = ProviderRouteImport.update({
   id: '/provider',
   path: '/provider',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -278,12 +308,17 @@ const AppProfessionalsHandleRoute = AppProfessionalsHandleRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agents': typeof AgentsRoute
   '/app': typeof AppRouteWithChildren
+  '/discover': typeof DiscoverRoute
   '/docs': typeof DocsRoute
+  '/experts': typeof ExpertsRoute
   '/manifesto': typeof ManifestoRoute
+  '/organizations': typeof OrganizationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/provider': typeof ProviderRouteWithChildren
+  '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/analytics': typeof AppAnalyticsRoute
@@ -324,10 +359,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agents': typeof AgentsRoute
+  '/discover': typeof DiscoverRoute
   '/docs': typeof DocsRoute
+  '/experts': typeof ExpertsRoute
   '/manifesto': typeof ManifestoRoute
+  '/organizations': typeof OrganizationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/analytics': typeof AppAnalyticsRoute
@@ -369,12 +409,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agents': typeof AgentsRoute
   '/app': typeof AppRouteWithChildren
+  '/discover': typeof DiscoverRoute
   '/docs': typeof DocsRoute
+  '/experts': typeof ExpertsRoute
   '/manifesto': typeof ManifestoRoute
+  '/organizations': typeof OrganizationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/provider': typeof ProviderRouteWithChildren
+  '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/analytics': typeof AppAnalyticsRoute
@@ -417,12 +462,17 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/agents'
     | '/app'
+    | '/discover'
     | '/docs'
+    | '/experts'
     | '/manifesto'
+    | '/organizations'
     | '/pricing'
     | '/privacy'
     | '/provider'
+    | '/services'
     | '/terms'
     | '/app/admin'
     | '/app/analytics'
@@ -463,10 +513,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/agents'
+    | '/discover'
     | '/docs'
+    | '/experts'
     | '/manifesto'
+    | '/organizations'
     | '/pricing'
     | '/privacy'
+    | '/services'
     | '/terms'
     | '/app/admin'
     | '/app/analytics'
@@ -507,12 +562,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/agents'
     | '/app'
+    | '/discover'
     | '/docs'
+    | '/experts'
     | '/manifesto'
+    | '/organizations'
     | '/pricing'
     | '/privacy'
     | '/provider'
+    | '/services'
     | '/terms'
     | '/app/admin'
     | '/app/analytics'
@@ -554,12 +614,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AgentsRoute: typeof AgentsRoute
   AppRoute: typeof AppRouteWithChildren
+  DiscoverRoute: typeof DiscoverRoute
   DocsRoute: typeof DocsRoute
+  ExpertsRoute: typeof ExpertsRoute
   ManifestoRoute: typeof ManifestoRoute
+  OrganizationsRoute: typeof OrganizationsRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProviderRoute: typeof ProviderRouteWithChildren
+  ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
@@ -582,11 +647,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agents': {
+      id: '/agents'
+      path: '/agents'
+      fullPath: '/agents'
+      preLoaderRoute: typeof AgentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app': {
       id: '/app'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs': {
@@ -596,11 +675,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/experts': {
+      id: '/experts'
+      path: '/experts'
+      fullPath: '/experts'
+      preLoaderRoute: typeof ExpertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/manifesto': {
       id: '/manifesto'
       path: '/manifesto'
       fullPath: '/manifesto'
       preLoaderRoute: typeof ManifestoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organizations': {
+      id: '/organizations'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof OrganizationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -622,6 +715,13 @@ declare module '@tanstack/react-router' {
       path: '/provider'
       fullPath: '/provider'
       preLoaderRoute: typeof ProviderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -974,12 +1074,17 @@ const ProviderRouteWithChildren = ProviderRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AgentsRoute: AgentsRoute,
   AppRoute: AppRouteWithChildren,
+  DiscoverRoute: DiscoverRoute,
   DocsRoute: DocsRoute,
+  ExpertsRoute: ExpertsRoute,
   ManifestoRoute: ManifestoRoute,
+  OrganizationsRoute: OrganizationsRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProviderRoute: ProviderRouteWithChildren,
+  ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,

@@ -8,7 +8,8 @@ import { Counter, Reveal, Stagger, StaggerItem } from "@/components/motion/primi
 import { OpportunityCard, ProfessionalCard } from "@/components/system/entity-cards";
 import { SectionHeading, Tag, VerificationBadge } from "@/components/system/primitives";
 import { Button } from "@/components/ui/button";
-import { opportunities, professionals, universeGraph } from "@/lib/mock/data";
+import { useQuery } from "@tanstack/react-query";
+import { professionalsQuery, opportunitiesQuery, universeQuery } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 export function LandingHero() {
@@ -17,6 +18,8 @@ export function LandingHero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const graphY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -70]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.8], [1, reduced ? 1 : 0.15]);
+
+  const { data: universeGraph } = useQuery(universeQuery());
 
   return (
     <section ref={ref} className="relative overflow-hidden pt-20 pb-16 sm:pt-28">
@@ -43,7 +46,7 @@ export function LandingHero() {
           <Reveal delay={0.24}>
             <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button asChild size="lg" className="min-h-11 px-6">
-                <Link to="/app">
+                <Link to="/auth/signup">
                   Enter the platform
                   <ArrowRight className="size-4" />
                 </Link>
@@ -60,7 +63,7 @@ export function LandingHero() {
 
         <motion.div style={{ y: graphY }} className="mt-16">
           <Reveal delay={0.3}>
-            <CapabilityUniverse graph={universeGraph} compact />
+            {universeGraph && <CapabilityUniverse graph={universeGraph} compact />}
           </Reveal>
         </motion.div>
       </div>
@@ -198,6 +201,14 @@ const PREVIEWS = [
 
 export function ProductPreview() {
   const [tab, setTab] = useState("people");
+  
+  const { data: professionalsData } = useQuery(professionalsQuery({ pageSize: 3 }));
+  const professionals = professionalsData?.items || [];
+  
+  const { data: opportunitiesData } = useQuery(opportunitiesQuery({ pageSize: 3 }));
+  const opportunities = opportunitiesData?.items || [];
+  
+  const { data: universeGraph } = useQuery(universeQuery());
 
   return (
     <section className="py-24">
@@ -245,7 +256,7 @@ export function ProductPreview() {
               ))}
             </div>
           )}
-          {tab === "graph" && <CapabilityUniverse graph={universeGraph} compact />}
+          {tab === "graph" && universeGraph && <CapabilityUniverse graph={universeGraph} compact />}
         </div>
       </div>
     </section>
@@ -280,7 +291,7 @@ export function ClosingInvitation() {
               <Link to="/auth/signup">Request access</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="min-h-11 px-6">
-              <Link to="/app">Explore the platform</Link>
+              <Link to="/auth/signup">Explore the platform</Link>
             </Button>
           </div>
         </Reveal>

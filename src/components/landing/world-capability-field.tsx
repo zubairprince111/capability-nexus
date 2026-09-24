@@ -2,7 +2,8 @@ import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useState } from "react";
 
 import { StatusDot } from "@/components/system/primitives";
-import { worldPresence } from "@/lib/mock/data";
+import { useQuery } from "@tanstack/react-query";
+import { presenceQuery } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,7 +13,8 @@ import { cn } from "@/lib/utils";
  */
 export function WorldCapabilityField({ className }: { className?: string }) {
   const reduced = useReducedMotion();
-  const [active, setActive] = useState(worldPresence[0]!.id);
+  const { data: worldPresence = [] } = useQuery(presenceQuery());
+  const [active, setActive] = useState(worldPresence[0]?.id || "");
 
   const dots = useMemo(() => {
     const points: { x: number; y: number; o: number }[] = [];
@@ -30,7 +32,9 @@ export function WorldCapabilityField({ className }: { className?: string }) {
     return points;
   }, []);
 
-  const activeCity = worldPresence.find((c) => c.id === active) ?? worldPresence[0]!;
+  const activeCity = worldPresence.find((c) => c.id === active) ?? worldPresence[0];
+
+  if (worldPresence.length === 0) return null;
 
   return (
     <div className={cn("surface-card relative overflow-hidden", className)}>

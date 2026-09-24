@@ -70,17 +70,13 @@ export function Terms() {
       {/* Ambient background glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-[#15846E]/10 blur-[140px] rounded-full pointer-events-none" />
 
-      <SiteHeader />
+      <SiteHeader variant="minimal" />
 
       <main className="flex-1 py-20 sm:py-28 relative z-10">
         <PageTransition className="max-w-4xl mx-auto px-6 lg:px-8">
           
           {/* Header */}
           <div className="mb-16 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#15846E]/15 border border-[#15846E]/30 text-[#10b981] font-mono text-xs tracking-wider uppercase">
-              <FileText className="size-3.5" />
-              <span>Legal & Governance</span>
-            </div>
             <h1 className="text-4xl sm:text-5xl font-normal text-white tracking-tight">
               Terms of Use
             </h1>

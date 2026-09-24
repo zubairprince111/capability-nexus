@@ -1,4 +1,5 @@
-import { Outlet, createFileRoute, Link, useRouterState } from "@tanstack/react-router";
+import { Outlet, createFileRoute, Link, useRouterState, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
   Activity,
   Banknote,
@@ -15,6 +16,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/provider")({
+  beforeLoad: () => {
+    if (typeof window !== "undefined") {
+      const isAuth = localStorage.getItem("ai5k_authenticated") === "true";
+      if (!isAuth) {
+        throw redirect({ to: "/auth/login" });
+      }
+    }
+  },
   component: ProviderLayout,
 });
 

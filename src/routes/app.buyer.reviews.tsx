@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageTransition } from "@/components/motion/primitives";
-import { MOCK_VERIFIED_REVIEWS } from "@/lib/services/ai5k-service";
-import { VerifiedReview } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
+import { buyerReviewsQuery } from "@/lib/queries";
 import { Star, ShieldCheck, CheckCircle2, Award, UserCheck, MessageSquare } from "lucide-react";
 
 export const Route = createFileRoute("/app/buyer/reviews")({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/app/buyer/reviews")({
 });
 
 function ReviewsRoute() {
-  const [reviews] = useState<VerifiedReview[]>(MOCK_VERIFIED_REVIEWS);
+  const { data: reviews = [] } = useQuery(buyerReviewsQuery());
 
   return (
     <PageTransition className="max-w-6xl mx-auto space-y-8">

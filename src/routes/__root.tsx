@@ -31,7 +31,7 @@ function NotFoundComponent() {
             Go home
           </Link>
           <Link
-            to="/app"
+            to="/auth/signup"
             className="inline-flex min-h-11 items-center justify-center rounded-md border border-border px-5 text-sm font-medium transition-colors hover:bg-accent"
           >
             Mission Control

@@ -1,10 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CreditCard, Lock, Smartphone } from "lucide-react";
 import { useState } from "react";
 
 import { Wordmark } from "@/components/brand/logo";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/checkout/$serviceId")({
+  beforeLoad: () => {
+    if (typeof window !== "undefined") {
+      const isAuth = localStorage.getItem("ai5k_authenticated") === "true";
+      if (!isAuth) {
+        throw redirect({ to: "/auth/login" });
+      }
+    }
+  },
   component: CheckoutPage,
 });
 
@@ -191,8 +200,11 @@ function CheckoutPage() {
       </main>
 
       <footer className="flex h-16 items-center justify-between border-t border-border bg-surface px-8 text-[0.625rem] font-mono text-muted-foreground">
-        <div>
-          <span className="text-primary font-bold">AI5K</span> © 2026 Secure Infrastructure.
+        <div className="flex items-center gap-3">
+          <Wordmark subtle />
+          <span className="text-muted-foreground/30">/</span>
+          <img src="/cloudcamp.png" alt="CloudCamp Logo" className="h-5 w-auto object-contain opacity-80" />
+          <span>© 2026 Secure Infrastructure.</span>
         </div>
         <div className="flex gap-6">
           <Link to="/" className="hover:text-foreground">Terms</Link>
@@ -204,7 +216,3 @@ function CheckoutPage() {
     </div>
   );
 }
-
-// Minimal inline button for the cancel link to avoid extra imports if unneeded, 
-// but we used standard Button so let's import it:
-import { Button } from "@/components/ui/button";

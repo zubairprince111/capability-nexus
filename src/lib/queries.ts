@@ -4,11 +4,14 @@ import {
   adminRepository,
   analyticsRepository,
   assetsRepository,
+  buyerRepository,
+  commerceRepository,
   communityRepository,
   learningRepository,
   messagesRepository,
   notificationsRepository,
   opportunitiesRepository,
+  organizationServiceRepository,
   organizationsRepository,
   professionalsRepository,
   projectsRepository,
@@ -37,6 +40,14 @@ export const queryKeys = {
   learning: ["learning"] as const,
   community: ["community"] as const,
   audit: ["audit"] as const,
+  proposals: ["proposals"] as const,
+  contracts: ["contracts"] as const,
+  payments: ["payments"] as const,
+  requirements: ["requirements"] as const,
+  matches: ["matches"] as const,
+  reviews: ["reviews"] as const,
+  deliveryPods: ["delivery-pods"] as const,
+  marketplaceListings: ["marketplace-listings"] as const,
 };
 
 export const sessionQuery = () =>
@@ -92,3 +103,27 @@ export const communityQuery = () =>
 
 export const auditQuery = () =>
   queryOptions({ queryKey: queryKeys.audit, queryFn: () => adminRepository.audit() });
+
+export const proposalsQuery = () =>
+  queryOptions({ queryKey: queryKeys.proposals, queryFn: () => commerceRepository.proposals() });
+
+export const contractsQuery = () =>
+  queryOptions({ queryKey: queryKeys.contracts, queryFn: () => commerceRepository.contracts() });
+
+export const paymentsQuery = () =>
+  queryOptions({ queryKey: queryKeys.payments, queryFn: () => commerceRepository.payments() });
+
+export const buyerRequirementsQuery = () =>
+  queryOptions({ queryKey: queryKeys.requirements, queryFn: () => buyerRepository.requirements() });
+
+export const buyerMatchesQuery = () =>
+  queryOptions({ queryKey: queryKeys.matches, queryFn: () => buyerRepository.matches() });
+
+export const buyerReviewsQuery = () =>
+  queryOptions({ queryKey: queryKeys.reviews, queryFn: () => buyerRepository.reviews() });
+
+export const deliveryPodsQuery = () =>
+  queryOptions({ queryKey: queryKeys.deliveryPods, queryFn: () => organizationServiceRepository.deliveryPods() });
+
+export const marketplaceListingsQuery = () =>
+  queryOptions({ queryKey: queryKeys.marketplaceListings, queryFn: () => commerceRepository.marketplaceListings() });

@@ -32,8 +32,7 @@ function Avatar({ initials, tone = "primary" }: { initials: string; tone?: "prim
 export function ProfessionalCard({ person }: { person: Professional }) {
   return (
     <Link
-      to="/app/professionals/$handle"
-      params={{ handle: person.handle }}
+      to="/auth/signup"
       className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] focus-visible:outline-none"
     >
       {/* Subtle top border highlight */}
@@ -108,8 +107,7 @@ export function ProfessionalCard({ person }: { person: Professional }) {
 export function OrganizationCard({ org }: { org: Organization }) {
   return (
     <Link
-      to="/app/organizations/$slug"
-      params={{ slug: org.slug }}
+      to="/auth/signup"
       className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] focus-visible:outline-none"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />
@@ -165,8 +163,7 @@ export function OrganizationCard({ org }: { org: Organization }) {
 export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
   return (
     <Link
-      to="/app/opportunities/$id"
-      params={{ id: opportunity.id }}
+      to="/auth/signup"
       className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface/40 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] focus-visible:outline-none"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-50" />

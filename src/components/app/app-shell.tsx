@@ -32,7 +32,9 @@ import {
   User,
   Users,
   Workflow,
-  Zap
+  Zap,
+  LogOut,
+  Lock
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -52,7 +54,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { notificationsQuery, sessionQuery } from "@/lib/queries";
-import { getActiveRole, setActiveRole } from "@/lib/services/ai5k-service";
+import { getActiveRole, setActiveRole, hasAdminAccess } from "@/lib/services/ai5k-service";
 import { AppRole } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -68,7 +70,7 @@ interface NavGroup {
 }
 
 // 1. PROFESSIONAL WORKSPACE NAV
-const PROFESSIONAL_NAV: NavGroup[] = [
+const getProfessionalNav = (userHandle: string): NavGroup[] => [
   {
     title: "Discover",
     items: [
@@ -88,7 +90,7 @@ const PROFESSIONAL_NAV: NavGroup[] = [
   {
     title: "Trust & Identity",
     items: [
-      { label: "My Profile", to: "/app/professionals/$handle", icon: User },
+      { label: "My Profile", to: `/app/professionals/${userHandle}`, icon: User },
       { label: "Evidence Vault", to: "/app/admin/verification", icon: FileCheck2 },
       { label: "Assessments", to: "/app/learning", icon: GraduationCap },
       { label: "Verified Reviews", to: "/app/buyer/reviews", icon: ShieldCheck },
@@ -135,10 +137,10 @@ const ORGANIZATION_NAV: NavGroup[] = [
 // 3. BUYER WORKSPACE NAV
 const BUYER_NAV: NavGroup[] = [
   {
-    title: "Discover & Intake",
+    title: "Discover & Scope",
     items: [
-      { label: "What to Build? Intake", to: "/app/buyer/intake", icon: Sparkles },
-      { label: "My Requisitions", to: "/app/buyer/requests", icon: Target },
+      { label: "Create Project Scope", to: "/app/buyer/intake", icon: Sparkles },
+      { label: "My Project Requests", to: "/app/buyer/requests", icon: Target },
       { label: "Explainable Matches", to: "/app/buyer/matches", icon: Orbit },
       { label: "Saved Capabilities", to: "/app/buyer/saved", icon: Boxes },
     ],
@@ -162,7 +164,7 @@ const BUYER_NAV: NavGroup[] = [
   },
 ];
 
-// 4. ADMIN / OPERATIONS WORKSPACE NAV
+// 4. ADMIN / OPERATIONS CONSOLE NAV (PRIVILEGED)
 const ADMIN_NAV: NavGroup[] = [
   {
     title: "Mission Control",
@@ -173,7 +175,7 @@ const ADMIN_NAV: NavGroup[] = [
     ],
   },
   {
-    title: "Network & Trust",
+    title: "Network & Governance",
     items: [
       { label: "Professionals", to: "/app/professionals", icon: Users },
       { label: "Organizations", to: "/app/organizations", icon: ShieldCheck },
@@ -193,18 +195,18 @@ const ADMIN_NAV: NavGroup[] = [
   },
 ];
 
-function getRoleNav(role: AppRole): NavGroup[] {
+function getRoleNav(role: AppRole, userHandle: string): NavGroup[] {
   switch (role) {
     case "professional":
-      return PROFESSIONAL_NAV;
+      return getProfessionalNav(userHandle);
     case "organization":
       return ORGANIZATION_NAV;
     case "buyer":
       return BUYER_NAV;
     case "admin":
-      return ADMIN_NAV;
+      return hasAdminAccess() ? ADMIN_NAV : getProfessionalNav(userHandle);
     default:
-      return PROFESSIONAL_NAV;
+      return getProfessionalNav(userHandle);
   }
 }
 
@@ -249,80 +251,10 @@ function NavLinks({ groups, collapsed, onNavigate }: { groups: NavGroup[]; colla
   );
 }
 
-function WorkspaceSwitcher({ activeRole, onSwitchRole, collapsed }: { activeRole: AppRole; onSwitchRole: (role: AppRole) => void; collapsed: boolean }) {
-  const ROLE_LABELS: Record<AppRole, { label: string; icon: LucideIcon; color: string }> = {
-    professional: { label: "Professional Workspace", icon: User, color: "text-emerald-400" },
-    organization: { label: "Organization Workspace", icon: Building2, color: "text-cyan-400" },
-    buyer: { label: "Buyer Workspace", icon: ShoppingBag, color: "text-amber-400" },
-    admin: { label: "Admin / Operations", icon: ShieldCheck, color: "text-purple-400" },
-  };
-
-  const current = ROLE_LABELS[activeRole];
-  const Icon = current.icon;
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className={cn(
-            "flex items-center gap-2 rounded-lg border border-border bg-surface/80 px-2.5 py-1.5 text-left text-xs font-mono transition-all hover:border-primary/40 hover:bg-elevated w-full",
-            collapsed ? "justify-center px-2" : "justify-between"
-          )}
-          title={collapsed ? current.label : undefined}
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <Icon className={cn("size-3.5 shrink-0", current.color)} />
-            {!collapsed && <span className="truncate text-foreground font-medium text-[11px]">{current.label}</span>}
-          </div>
-          {!collapsed && <ChevronDown className="size-3 text-muted-foreground shrink-0" />}
-        </button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="start" className="w-60 bg-neutral-950 border-neutral-800 text-white z-50">
-        <DropdownMenuLabel className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest px-2 py-1.5">
-          Select Workspace
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator className="bg-neutral-800" />
-        
-        <DropdownMenuItem 
-          onClick={() => onSwitchRole("professional")} 
-          className={cn("gap-2.5 text-xs font-mono cursor-pointer hover:bg-neutral-900 py-2", activeRole === "professional" && "bg-emerald-950/40 text-emerald-400")}
-        >
-          <User className="size-4 text-emerald-400" /> 
-          <span>Professional Workspace</span>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem 
-          onClick={() => onSwitchRole("organization")} 
-          className={cn("gap-2.5 text-xs font-mono cursor-pointer hover:bg-neutral-900 py-2", activeRole === "organization" && "bg-cyan-950/40 text-cyan-400")}
-        >
-          <Building2 className="size-4 text-cyan-400" /> 
-          <span>Organization Workspace</span>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem 
-          onClick={() => onSwitchRole("buyer")} 
-          className={cn("gap-2.5 text-xs font-mono cursor-pointer hover:bg-neutral-900 py-2", activeRole === "buyer" && "bg-amber-950/40 text-amber-400")}
-        >
-          <ShoppingBag className="size-4 text-amber-400" /> 
-          <span>Buyer Workspace</span>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem 
-          onClick={() => onSwitchRole("admin")} 
-          className={cn("gap-2.5 text-xs font-mono cursor-pointer hover:bg-neutral-900 py-2", activeRole === "admin" && "bg-purple-950/40 text-purple-400")}
-        >
-          <ShieldCheck className="size-4 text-purple-400" /> 
-          <span>Admin / Operations</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true); // Always closed by default
+  const [isHovered, setIsHovered] = useState(false); // Expands on cursor hover
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [currentRole, setCurrentRole] = useState<AppRole>(getActiveRole());
@@ -360,14 +292,29 @@ export function AppShell({ children }: { children: ReactNode }) {
   const handleRoleSwitch = (role: AppRole) => {
     setActiveRole(role);
     setCurrentRole(role);
+    setCollapsed(true);
+    setIsHovered(false);
   };
 
-  const navGroups = getRoleNav(currentRole);
+  const handleSignOut = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("ai5k_user_name");
+      localStorage.removeItem("ai5k_user_email");
+      localStorage.removeItem("ai5k_user_handle");
+      localStorage.removeItem("ai5k_user_role");
+      localStorage.removeItem("ai5k_user_bio");
+      window.location.href = "/";
+    }
+  };
 
   const userName = (typeof window !== "undefined" ? localStorage.getItem("ai5k_user_name") : null) || session?.name || "Ada Lovelace";
   const userHandle = (typeof window !== "undefined" ? localStorage.getItem("ai5k_user_handle") : null) || session?.handle || "adalovelace";
-  const userIndex = (typeof window !== "undefined" ? localStorage.getItem("ai5k_user_index") : null) || session?.capabilityIndex || "96.8";
   const userInitials = userName.split(" ").filter(Boolean).map((n) => n[0]).join("").substring(0, 2).toUpperCase() || "AL";
+
+  const navGroups = getRoleNav(currentRole, userHandle);
+
+  const isAdmin = currentRole === "admin";
+  const isEffectiveCollapsed = collapsed && !isHovered;
 
   return (
     <TooltipProvider delayDuration={300}>
@@ -375,43 +322,80 @@ export function AppShell({ children }: { children: ReactNode }) {
         
         {/* Sidebar Navigation */}
         <aside
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           className={cn(
-            "sticky top-0 hidden h-dvh shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] duration-300 lg:flex",
-            collapsed ? "w-[4.5rem]" : "w-[16.5rem]",
+            "sticky top-0 hidden h-dvh shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] duration-300 z-40 lg:flex",
+            isEffectiveCollapsed ? "w-[4.5rem]" : "w-[16.5rem]",
           )}
         >
           <div className="flex h-16 items-center justify-between px-4">
             <Link to="/" aria-label="AI5K home">
-              {collapsed ? <Wordmark subtle className="[&>span:last-child]:hidden" /> : <Wordmark />}
+              {isEffectiveCollapsed ? <Wordmark subtle className="[&>span:last-child]:hidden" /> : <Wordmark />}
             </Link>
           </div>
 
-          {/* Workspace Switcher in Sidebar */}
-          <div className="px-3 pb-3">
-            <WorkspaceSwitcher activeRole={currentRole} onSwitchRole={handleRoleSwitch} collapsed={collapsed} />
-          </div>
+
 
           <ScrollArea className="flex-1 px-3 py-2">
-            <NavLinks groups={navGroups} collapsed={collapsed} />
+            <NavLinks groups={navGroups} collapsed={isEffectiveCollapsed} />
           </ScrollArea>
 
-          <div className="border-t border-sidebar-border p-3">
+          <div className="border-t border-sidebar-border p-3 space-y-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSignOut}
+              className={cn(
+                "w-full justify-start gap-3 text-red-400 hover:text-red-300 hover:bg-red-950/30 text-xs font-mono transition-colors",
+                isEffectiveCollapsed && "justify-center px-2"
+              )}
+              title={isEffectiveCollapsed ? "Sign Out" : undefined}
+            >
+              <LogOut className="size-4 shrink-0" />
+              {!isEffectiveCollapsed && <span>Sign Out</span>}
+            </Button>
+
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setCollapsed((c) => !c)}
               className="w-full justify-start gap-3 text-muted-foreground"
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={isEffectiveCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
-              {collapsed ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}
-              {!collapsed && <span className="text-xs">Collapse · ⌘\</span>}
+              {isEffectiveCollapsed ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}
+              {!isEffectiveCollapsed && <span className="text-xs">{collapsed ? "Pin Open · ⌘\\" : "Collapse · ⌘\\"}</span>}
             </Button>
           </div>
         </aside>
 
         {/* Main Workspace Body */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
+          <header className={cn(
+            "sticky top-0 z-30 border-b backdrop-blur-xl transition-colors",
+            isAdmin 
+              ? "border-purple-500/30 bg-neutral-950/90" 
+              : "border-border bg-background/85"
+          )}>
+            {/* Visually Distinct Admin Header Banner */}
+            {isAdmin && (
+              <div className="bg-purple-950/40 border-b border-purple-500/30 px-4 py-1.5 flex items-center justify-between text-xs font-mono text-purple-300">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="size-4 text-purple-400 animate-pulse" />
+                  <span className="font-bold tracking-wider uppercase">PRIVILEGED ADMIN CONSOLE</span>
+                  <span className="px-1.5 py-0.2 rounded bg-purple-500/20 text-[10px] text-purple-200 border border-purple-500/40">Demo RBAC Access</span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleRoleSwitch("professional")}
+                  className="h-6 text-[10px] border-purple-500/40 text-purple-200 hover:bg-purple-900/50 hover:text-white"
+                >
+                  <LogOut className="size-3 mr-1" /> Exit Admin Console
+                </Button>
+              </div>
+            )}
+
             <div className="grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6">
               
               <div className="flex items-center gap-2">
@@ -426,10 +410,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <div className="flex h-16 items-center px-4">
                       <Wordmark />
                     </div>
-                    <div className="px-3 pb-3">
-                      <WorkspaceSwitcher activeRole={currentRole} onSwitchRole={handleRoleSwitch} collapsed={false} />
-                    </div>
-                    <ScrollArea className="h-[calc(100dvh-7rem)] px-3 pb-6">
+                    <ScrollArea className="h-[calc(100dvh-5rem)] px-3 pb-6">
                       <NavLinks groups={navGroups} collapsed={false} onNavigate={() => setMobileOpen(false)} />
                     </ScrollArea>
                   </SheetContent>
@@ -450,14 +431,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
               {/* User Identity & Notifications */}
               <div className="flex items-center gap-2">
-                <div className="hidden sm:block">
-                  <WorkspaceSwitcher activeRole={currentRole} onSwitchRole={handleRoleSwitch} collapsed={false} />
-                </div>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      to="/app/notifications"
+                {/* Notifications Dropdown Menu */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
                       aria-label={`Notifications, ${unread} unread`}
                       className="relative grid min-h-10 min-w-10 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
@@ -467,27 +445,176 @@ export function AppShell({ children }: { children: ReactNode }) {
                           <StatusDot tone="proof" pulse />
                         </span>
                       )}
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>{unread} unread signals</TooltipContent>
-                </Tooltip>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-80 sm:w-96 bg-neutral-950 border-neutral-800 text-white z-50 p-0 shadow-2xl">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800">
+                      <div className="flex items-center gap-2">
+                        <Bell className="size-4 text-emerald-400" />
+                        <span className="text-xs font-mono font-semibold uppercase tracking-wider text-white">
+                          Notifications & Signals
+                        </span>
+                      </div>
+                      {unread > 0 ? (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold">
+                          {unread} UNREAD
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-mono text-neutral-400">All Read</span>
+                      )}
+                    </div>
 
-                <Link
-                  to="/app/professionals/$handle"
-                  params={{ handle: userHandle }}
-                  className="ml-1 flex items-center gap-2.5 rounded-lg border border-border bg-surface px-2.5 py-1.5 transition-colors hover:bg-elevated hover:border-primary/40 group"
-                >
-                  <span className="grid size-7 place-items-center rounded-md border border-primary/25 bg-primary/10 text-data text-[0.625rem] font-semibold text-primary group-hover:bg-primary group-hover:text-black transition-colors">
-                    {userInitials}
-                  </span>
-                  <span className="hidden min-w-0 flex-col leading-tight md:flex">
-                    <span className="truncate text-xs font-medium text-foreground">{userName}</span>
-                    <span className="text-data truncate text-[0.625rem] text-muted-foreground flex items-center gap-1">
-                      <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />
-                      Index {userIndex}
-                    </span>
-                  </span>
-                </Link>
+                    <div className="max-h-80 overflow-y-auto divide-y divide-neutral-900">
+                      {notifications && notifications.length > 0 ? (
+                        notifications.map((item: any) => (
+                          <div key={item.id} className={cn("p-3.5 text-xs space-y-1 transition-colors hover:bg-neutral-900/80 cursor-pointer", !item.read && "bg-emerald-950/20")}>
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-white font-mono">{item.title}</span>
+                              <span className="text-[10px] font-mono text-neutral-400">{item.timestamp || item.created_at || "Recent"}</span>
+                            </div>
+                            <p className="text-[11px] text-neutral-300 font-light leading-relaxed">
+                              {item.message || item.description || "Attestation or capability signal updated."}
+                            </p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-6 text-center text-xs font-mono text-neutral-400">
+                          No active notifications or signals.
+                        </div>
+                      )}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* User Dropdown Menu */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="ml-1 flex items-center gap-2 rounded-lg border border-border bg-surface px-2.5 py-1.5 transition-all hover:bg-elevated hover:border-primary/40 group text-left"
+                    >
+                      <span className="grid size-7 place-items-center rounded-md border border-primary/25 bg-primary/10 text-data text-[0.625rem] font-semibold text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+                        {userInitials}
+                      </span>
+                      <span className="hidden min-w-0 flex-col leading-tight md:flex">
+                        <span className="truncate text-xs font-medium text-foreground">{userName}</span>
+                        <span className="text-data truncate text-[0.625rem] text-muted-foreground flex items-center gap-1">
+                          <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />
+                          <span className="capitalize font-mono text-emerald-400 font-semibold">{currentRole}</span>
+                        </span>
+                      </span>
+                      <ChevronDown className="size-3 text-muted-foreground shrink-0 hidden sm:block" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-64 bg-neutral-950 border-neutral-800 text-white z-50">
+                    <DropdownMenuLabel className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest px-2 py-1.5">
+                      User Account
+                    </DropdownMenuLabel>
+                    <div className="px-2 py-1.5 text-xs border-b border-neutral-800 mb-1">
+                      <div className="font-semibold text-white">{userName}</div>
+                      <div className="text-[11px] font-mono text-neutral-400">@{userHandle}</div>
+                    </div>
+
+                    <DropdownMenuLabel className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest px-2 py-1 flex items-center justify-between">
+                      <span>Switch Stakeholder Workspace</span>
+                    </DropdownMenuLabel>
+
+                    <div className="p-1 bg-neutral-900 border border-neutral-800 rounded-md grid grid-cols-3 gap-1 mx-2 my-1 text-xs font-mono">
+                      <button
+                        type="button"
+                        onClick={() => handleRoleSwitch("professional")}
+                        className={cn(
+                          "flex items-center justify-center gap-1 py-1 px-1 rounded transition-all text-[11px]",
+                          currentRole === "professional"
+                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-bold"
+                            : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+                        )}
+                        title="Professional Workspace"
+                      >
+                        <User className="size-3 text-emerald-400" />
+                        <span>Pro</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRoleSwitch("organization")}
+                        className={cn(
+                          "flex items-center justify-center gap-1 py-1 px-1 rounded transition-all text-[11px]",
+                          currentRole === "organization"
+                            ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 font-bold"
+                            : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+                        )}
+                        title="Organization Workspace"
+                      >
+                        <Building2 className="size-3 text-cyan-400" />
+                        <span>Org</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRoleSwitch("buyer")}
+                        className={cn(
+                          "flex items-center justify-center gap-1 py-1 px-1 rounded transition-all text-[11px]",
+                          currentRole === "buyer"
+                            ? "bg-amber-500/20 text-amber-300 border border-amber-500/50 font-bold"
+                            : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+                        )}
+                        title="Buyer Workspace"
+                      >
+                        <ShoppingBag className="size-3 text-amber-400" />
+                        <span>Buyer</span>
+                      </button>
+                    </div>
+
+                    {/* Privileged Operational Console (Role-Gated: Only visible if user has 'admin' role) */}
+                    {hasAdminAccess() && (
+                      <>
+                        <DropdownMenuSeparator className="bg-neutral-800 my-1" />
+                        <DropdownMenuLabel className="text-[10px] font-mono text-purple-400 uppercase tracking-widest px-2 py-1">
+                          Privileged Console
+                        </DropdownMenuLabel>
+                        <DropdownMenuItem 
+                          onClick={() => handleRoleSwitch("admin")} 
+                          className={cn(
+                            "gap-2.5 text-xs font-mono cursor-pointer py-2 border border-purple-500/30 rounded my-1",
+                            currentRole === "admin" 
+                              ? "bg-purple-950/60 text-purple-300 border-purple-500/60 font-bold" 
+                              : "bg-purple-950/20 text-purple-300 hover:bg-purple-900/40"
+                          )}
+                        >
+                          <ShieldCheck className="size-4 text-purple-400 shrink-0" /> 
+                          <div className="flex flex-col leading-tight">
+                            <span className="font-semibold">Enter Admin Mission Control</span>
+                            <span className="text-[10px] text-purple-400/80">RBAC Operational Access</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </>
+                    )}
+
+                    <DropdownMenuSeparator className="bg-neutral-800 my-1" />
+
+                    <DropdownMenuItem asChild className="gap-2 text-xs cursor-pointer hover:bg-neutral-900 py-1.5">
+                      <Link to="/app/professionals/$handle" params={{ handle: userHandle }}>
+                        <User className="size-3.5 text-neutral-400" /> View Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="gap-2 text-xs cursor-pointer hover:bg-neutral-900 py-1.5">
+                      <Link to="/app/settings">
+                        <Settings className="size-3.5 text-neutral-400" /> Account Settings
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator className="bg-neutral-800 my-1" />
+
+                    <DropdownMenuItem 
+                      onClick={handleSignOut} 
+                      className="gap-2 text-xs font-mono text-red-400 font-semibold cursor-pointer hover:bg-red-950/40 hover:text-red-300 py-2"
+                    >
+                      <LogOut className="size-3.5 text-red-400" />
+                      <span>Sign Out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
             </div>

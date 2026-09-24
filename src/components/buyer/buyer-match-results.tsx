@@ -1,11 +1,11 @@
-import { MOCK_EXPLAINABLE_MATCHES } from "@/lib/services/ai5k-service";
-import { ExplainableMatch } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
+import { buyerMatchesQuery } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Sparkles, CheckCircle2, ShieldCheck, ArrowRight, User, Building2, Zap, FileText } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export function BuyerMatchResults() {
-  const matches: ExplainableMatch[] = MOCK_EXPLAINABLE_MATCHES;
+  const { data: matches = [] } = useQuery(buyerMatchesQuery());
 
   return (
     <div className="space-y-8">
@@ -24,7 +24,7 @@ export function BuyerMatchResults() {
         </div>
 
         <Button asChild size="sm" variant="outline" className="text-xs font-mono">
-          <Link to="/app/buyer/intake">+ New Requirement Intake</Link>
+          <Link to="/app/buyer/intake">+ New Project Scope</Link>
         </Button>
       </div>
 

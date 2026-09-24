@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { MOCK_DELIVERY_PODS } from "@/lib/services/ai5k-service";
+import { useQuery } from "@tanstack/react-query";
+import { deliveryPodsQuery } from "@/lib/queries";
 import { DeliveryPod, DeliveryPodMember } from "@/lib/types";
 import { Zap, Users, ShieldCheck, Plus, Trash2, CheckCircle2, ArrowRight } from "lucide-react";
 
 export function DeliveryPodBuilder() {
-  const [pods, setPods] = useState<DeliveryPod[]>(MOCK_DELIVERY_PODS);
+  const { data: initialPods = [] } = useQuery(deliveryPodsQuery());
+  const [pods, setPods] = useState<DeliveryPod[]>([]);
+
+  useEffect(() => {
+    if (initialPods.length > 0 && pods.length === 0) {
+      setPods(initialPods);
+    }
+  }, [initialPods, pods.length]);
   
   // New Pod Modal state
   const [createOpen, setCreateOpen] = useState(false);

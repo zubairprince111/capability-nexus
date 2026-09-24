@@ -1,8 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { PageTransition } from "@/components/motion/primitives";
 import { AdminVerificationQueue } from "@/components/admin/admin-verification-queue";
+import { hasAdminAccess } from "@/lib/services/ai5k-service";
 
 export const Route = createFileRoute("/app/admin")({
+  beforeLoad: () => {
+    if (typeof window !== "undefined") {
+      if (!hasAdminAccess()) {
+        throw redirect({ to: "/app" });
+      }
+    }
+  },
   head: () => ({
     meta: [
       { title: "Admin & Operations — AI5K Network Governance" },
