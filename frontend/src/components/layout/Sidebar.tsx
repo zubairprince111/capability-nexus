@@ -95,6 +95,11 @@ export default function Sidebar({
     setMobileOpen(false);
   }, [pathname]);
 
+  function isActive(href: string) {
+    if (href === "/dashboard") return pathname === href;
+    return pathname === href || pathname.startsWith(href + "/");
+  }
+
   const initials = (user?.full_name ?? "?")
     .split(/\s+/)
     .map((w) => w[0])
