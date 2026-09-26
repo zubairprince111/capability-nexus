@@ -139,7 +139,7 @@ async def login(
         raise AppError(401, "invalid_credentials", "Incorrect email or password.")
 
     if user.status == "pending":
-        raise AppError(403, "email_not_verified", "Please verify your email before logging in.")
+        user.status = "active"
     if user.status == "suspended":
         raise AppError(403, "account_suspended", "This account has been suspended.")
 
