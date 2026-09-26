@@ -1,0 +1,15 @@
+
+# Uploaded CVs (profile-check pipeline)
+storage/
+var/
+
+__pycache__/
+venv/
+env/
+.env
+.pytest_cache/
+alembic/__pycache__/
+alembic/versions/__pycache__/
+pgsql/
+
+*.zip

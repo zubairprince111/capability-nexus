@@ -1,0 +1,1 @@
+Get-ChildItem -Path 'F:\AI5k v0.1\figma-vision\capability-nexus\frontend\.next\static\chunks\app' -Recurse -File | Where-Object { $_.Name -match 'page-.*\.js$' } | ForEach-Object { '{0}  {1}' -f $_.LastWriteTime, $_.Name }

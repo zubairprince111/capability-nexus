@@ -1,0 +1,344 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui;
+  --font-sans: "Inter", Arial, ui-sans-serif, system-ui;
+  --c-ink: #e8e9ea;
+  --c-hairline: #1f2024;
+  --c-canvas: #0a0a0a;
+  --c-emerald: #10b981;
+  --c-emerald-soft: #15846E;
+  --c-mint: #6ee7b7;
+  --c-cyan: #22d3ee;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--c-canvas);
+}
+
+/* Body — dark canvas with two soft glows that drift very slowly */
+body {
+  @apply bg-canvas text-ink font-sans antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 50% -200px, rgba(16, 185, 129, 0.07), transparent 70%),
+    radial-gradient(800px 400px at 92% 30%, rgba(34, 211, 238, 0.045), transparent 70%),
+    radial-gradient(900px 600px at 8% 80%, rgba(21, 132, 110, 0.045), transparent 70%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Grain — barely-visible film grain over the canvas for depth */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.65'/></svg>");
+  background-size: 200px 200px;
+}
+
+/* Top hairline that fades in/out under the sticky page bar */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(16, 185, 129, 0.025) 0%, transparent 6%);
+}
+
+/* Selection */
+::selection {
+  background: rgba(34, 211, 238, 0.22);
+  color: #fff;
+}
+
+/* Focus rings */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 1px solid #22d3ee;
+  outline-offset: 0;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #4c6ee6;
+  outline-offset: 2px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Surfaces
+ * Three layered surfaces, all with hairline borders + optional inset highlight.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+.hairline {
+  background: linear-gradient(to right, transparent, #1f2024 18%, #1f2024 82%, transparent);
+  height: 1px;
+}
+
+/* mono labels */
+.mono-label {
+  @apply font-mono uppercase tracking-[0.18em] text-muted;
+}
+
+/* Surfaces */
+.surface-card {
+  @apply rounded-md border border-hairline bg-stone;
+}
+
+.surface-card-hover {
+  @apply transition-all duration-300 ease-out-expo hover:-translate-y-[1px] hover:bg-stone-2 hover:border-border-light hover:shadow-elev-card;
+}
+
+/* Edge-glow border accent for hero / primary card */
+.edge-glow {
+  position: relative;
+}
+.edge-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(420px 240px at 8% 0%, rgba(16, 185, 129, 0.16), transparent 60%),
+    radial-gradient(380px 220px at 100% 100%, rgba(34, 211, 238, 0.12), transparent 60%);
+  opacity: 0.85;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  padding: 1px;
+}
+
+/* Hairline that fades softly on the right edge */
+.edge-tint {
+  position: relative;
+}
+.edge-tint::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(16, 185, 129, 0.35) 30%, rgba(34, 211, 238, 0.25) 70%, transparent);
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Animations
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateX(-2px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes soft-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.95; transform: scale(1.015); }
+}
+
+@keyframes drift-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes ring-pulse {
+  0%   { opacity: 0.45; transform: scale(0.985); }
+  100% { opacity: 0; transform: scale(1.22); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes number-pop {
+  0%   { opacity: 0; transform: translateY(4px) scale(0.985); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes underline-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes rotate-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes aurora {
+  0%   { transform: translate3d(0%, 0%, 0) rotate(0deg); }
+  50%  { transform: translate3d(-2%, 2%, 0) rotate(0.5deg); }
+  100% { transform: translate3d(0%, 0%, 0) rotate(0deg); }
+}
+
+/* Utility classes for the animations */
+.anim-fade-up   { animation: fade-up 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-fade-in   { animation: fade-in 400ms ease-out both; }
+.anim-breathe   { animation: soft-breathe 6s ease-in-out infinite; }
+.anim-drift     { animation: drift-slow 9s ease-in-out infinite; }
+.anim-scale-in  { animation: scale-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-number    { animation: number-pop 720ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-rotate    { animation: rotate-slow 60s linear infinite; }
+.anim-aurora    { animation: aurora 22s ease-in-out infinite; }
+
+/* Staggered entrance — apply to a parent to cascade children */
+.stagger > *:nth-child(1)  { animation-delay:  40ms; }
+.stagger > *:nth-child(2)  { animation-delay:  90ms; }
+.stagger > *:nth-child(3)  { animation-delay: 140ms; }
+.stagger > *:nth-child(4)  { animation-delay: 190ms; }
+.stagger > *:nth-child(5)  { animation-delay: 240ms; }
+.stagger > *:nth-child(6)  { animation-delay: 290ms; }
+.stagger > *:nth-child(7)  { animation-delay: 340ms; }
+.stagger > *:nth-child(8)  { animation-delay: 390ms; }
+
+/* Aurora backdrop for hero */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.6;
+  will-change: transform;
+}
+.aurora::before {
+  width: 540px;
+  height: 540px;
+  left: -120px;
+  top: -160px;
+  background: radial-gradient(closest-side, rgba(16, 185, 129, 0.30), transparent);
+  animation: aurora 22s ease-in-out infinite;
+}
+.aurora::after {
+  width: 480px;
+  height: 480px;
+  right: -120px;
+  bottom: -200px;
+  background: radial-gradient(closest-side, rgba(34, 211, 238, 0.18), transparent);
+  animation: aurora 30s ease-in-out infinite reverse;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #131316 0%, #1c1c20 35%, #131316 70%);
+  background-size: 200% 100%;
+  animation: shimmer 2.2s linear infinite;
+  border-radius: 6px;
+}
+
+/* Underline-on-hover (links) */
+.ul-hover {
+  position: relative;
+}
+.ul-hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ul-hover:hover::after { transform: scaleX(1); }
+
+/* Soft mask for fading right edges of long lists */
+.fade-right {
+  -webkit-mask-image: linear-gradient(to right, black 92%, transparent);
+          mask-image: linear-gradient(to right, black 92%, transparent);
+}
+
+/* Active rail for sidebar nav */
+.rail-active {
+  position: relative;
+}
+.rail-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--c-emerald), var(--c-emerald-soft));
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
+}
+
+/* Pulse ring (around the score ring) */
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 185, 129, 0.55);
+  animation: ring-pulse 2.6s ease-out infinite;
+}
+
+/* Score ring tick mark "tick in" animation */
+.score-tick {
+  animation: tick 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: center;
+}
+
+/* Live "now" dot */
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--c-emerald);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12), 0 0 12px rgba(16, 185, 129, 0.55);
+  animation: soft-breathe 2.2s ease-in-out infinite;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Number ticker: a small font-variant-numeric tweak to align digits */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Lightweight scroll bar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(38, 39, 44, 0.6);
+  border-radius: 8px;
+  transition: background 200ms;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(46, 51, 56, 0.9); }
