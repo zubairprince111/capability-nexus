@@ -85,17 +85,15 @@ export default function Sidebar({
   const [pinned, setPinned] = useState(false);
   const detailsRefs = useRef<HTMLDetailsElement[]>([]);
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const expanded = hovered || pinned;
 
-  // Close any open <details> menus on route change.
+  // Close any open <details> menus and mobile drawer on route change.
   useEffect(() => {
     detailsRefs.current.forEach((d) => d?.removeAttribute("open"));
+    setMobileOpen(false);
   }, [pathname]);
-
-  function isActive(href: string) {
-    if (href === "/dashboard") return pathname === href;
-    return pathname === href || pathname.startsWith(href + "/");
-  }
 
   const initials = (user?.full_name ?? "?")
     .split(/\s+/)
@@ -106,147 +104,263 @@ export default function Sidebar({
     .toUpperCase();
 
   return (
-    <aside
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="sticky top-0 hidden lg:flex flex-col h-dvh shrink-0 border-r border-hairline bg-canvas"
-      style={{
-        width: expanded ? expandedWidth : collapsedWidth,
-        transition: "width 240ms cubic-bezier(0.22, 1, 0.36, 1)",
-      }}
-      aria-label="Primary navigation"
-    >
-      {/* Brand */}
-      <div className="flex items-center h-24 px-5 border-b border-hairline">
-        <Logo href="/dashboard" size={80} />
+    <>
+      {/* Mobile Top Header (< lg) */}
+      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between h-15 px-4 bg-canvas/90 backdrop-blur border-b border-hairline w-full">
+        <Logo href="/dashboard" size={72} />
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setMobileOpen((o) => !o)}
+            className="p-2 text-ink hover:bg-stone rounded-md transition-colors"
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+          >
+            {mobileOpen ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="20" y2="18" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Nav */}
-      <nav
-        className="flex-1 px-2 py-4 overflow-y-auto"
-        aria-label="Primary"
-        style={{ scrollbarWidth: "thin" }}
-      >
-        {NAV_GROUPS.map((group, gi) => (
-          <div key={group.title} className={gi === 0 ? "" : "mt-6"}>
-            {expanded && (
-              <p className="px-3 mb-2 font-mono uppercase tracking-[0.18em] text-micro text-muted-2 overflow-hidden whitespace-nowrap">
-                {group.title}
-              </p>
-            )}
-            <ul className="space-y-0.5">
-              {group.items.map((item) => {
-                const active = isActive(item.href);
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={`group relative flex items-center gap-3 rounded-md h-9 text-[13px] transition-colors ${
-                        expanded ? "px-3" : "justify-center px-0"
-                      } ${
-                        active
-                          ? "bg-stone text-ink"
-                          : "text-muted hover:bg-stone hover:text-ink"
-                      }`}
-                      title={!expanded ? item.label : undefined}
-                      aria-current={active ? "page" : undefined}
-                    >
-                      {active && (
-                        <span
-                          aria-hidden
-                          className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-brand-emerald rounded-r-full"
-                        />
-                      )}
-                      <span className="shrink-0 inline-flex items-center justify-center size-4">
-                        {item.icon}
-                      </span>
-                      {expanded && (
-                        <span className="truncate overflow-hidden whitespace-nowrap">
-                          {item.label}
-                        </span>
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
-      </nav>
+      {/* Mobile Drawer Overlay & Panel (< lg) */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
 
-      {/* Footer: user + collapse control */}
-      <div className="border-t border-hairline p-2 space-y-1">
-        <details
-          ref={(el) => {
-            if (el) detailsRefs.current[0] = el;
-          }}
-          className="group rounded-md"
-        >
-          <summary
-            className={`list-none flex items-center gap-3 rounded-md cursor-pointer h-10 transition-colors hover:bg-stone ${
-              expanded ? "px-3" : "justify-center px-0"
-            }`}
-          >
-            <span className="shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-stone border border-border-light text-ink-soft text-[11px] font-mono">
-              {initials}
-            </span>
-            {expanded && (
-              <span className="flex-1 min-w-0 text-left">
-                <span className="block text-[13px] text-ink truncate">
-                  {user?.full_name}
+          {/* Drawer content */}
+          <div className="relative w-[280px] max-w-[80vw] bg-canvas border-r border-hairline h-full flex flex-col justify-between z-10 p-4 overflow-y-auto">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-hairline mb-4">
+                <Logo href="/dashboard" size={72} />
+                <button
+                  type="button"
+                  onClick={() => setMobileOpen(false)}
+                  className="p-1 text-muted hover:text-ink rounded-md"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Nav items */}
+              <nav className="space-y-6" aria-label="Mobile Navigation">
+                {NAV_GROUPS.map((group) => (
+                  <div key={group.title}>
+                    <p className="px-3 mb-2 font-mono uppercase tracking-[0.18em] text-micro text-muted-2">
+                      {group.title}
+                    </p>
+                    <ul className="space-y-1">
+                      {group.items.map((item) => {
+                        const active = isActive(item.href);
+                        return (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setMobileOpen(false)}
+                              className={`flex items-center gap-3 rounded-md px-3 h-10 text-sm transition-colors ${
+                                active
+                                  ? "bg-stone text-ink font-medium"
+                                  : "text-muted hover:bg-stone hover:text-ink"
+                              }`}
+                            >
+                              <span className="shrink-0 size-4">{item.icon}</span>
+                              <span className="truncate">{item.label}</span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </nav>
+            </div>
+
+            {/* Mobile Footer / Profile */}
+            <div className="pt-4 border-t border-hairline space-y-3">
+              <div className="flex items-center gap-3 px-3">
+                <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-stone border border-border-light text-ink-soft text-xs font-mono">
+                  {initials}
                 </span>
-                <span className="block font-mono uppercase tracking-[0.18em] text-micro text-muted-2 truncate">
-                  Account
-                </span>
-              </span>
-            )}
-            {expanded && (
-              <span
-                aria-hidden
-                className="text-muted-2 text-micro transition-transform group-open:rotate-90"
-              >
-                ›
-              </span>
-            )}
-          </summary>
-          {expanded && (
-            <div className="mt-1 ml-2 bg-stone border border-border-light rounded-md py-1 shadow-[0_8px_28px_-12px_rgba(0,0,0,0.8)]">
-              <Link
-                href="/settings"
-                className="block px-3 py-2 text-[13px] text-muted hover:text-ink hover:bg-stone-2 rounded-sm mx-1"
-              >
-                Settings
-              </Link>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-ink truncate">{user?.full_name}</p>
+                  <p className="text-xs text-muted truncate">{user?.email}</p>
+                </div>
+              </div>
               <button
                 type="button"
-                onClick={logout}
-                className="w-full text-left px-3 py-2 text-[13px] text-error-red hover:bg-stone-2 rounded-sm mx-1"
+                onClick={() => {
+                  setMobileOpen(false);
+                  logout();
+                }}
+                className="w-full text-left px-3 py-2 text-sm text-error-red hover:bg-stone-2 rounded-md font-medium transition-colors"
               >
                 Log out
               </button>
             </div>
-          )}
-        </details>
+          </div>
+        </div>
+      )}
 
-        <button
-          type="button"
-          onClick={() => setPinned((p) => !p)}
-          className={`w-full flex items-center gap-3 rounded-md h-9 text-[12px] text-muted-2 hover:text-ink hover:bg-stone transition-colors ${
-            expanded ? "px-3" : "justify-center px-0"
-          }`}
-          aria-label={pinned ? "Unpin sidebar" : "Pin sidebar open"}
-          title={!expanded ? (pinned ? "Unpin" : "Pin open") : undefined}
+      {/* Desktop Left Rail (lg+) */}
+      <aside
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="sticky top-0 hidden lg:flex flex-col h-dvh shrink-0 border-r border-hairline bg-canvas"
+        style={{
+          width: expanded ? expandedWidth : collapsedWidth,
+          transition: "width 240ms cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+        aria-label="Primary navigation"
+      >
+        {/* Brand */}
+        <div className="flex items-center h-24 px-5 border-b border-hairline">
+          <Logo href="/dashboard" size={80} />
+        </div>
+
+        {/* Nav */}
+        <nav
+          className="flex-1 px-2 py-4 overflow-y-auto"
+          aria-label="Primary"
+          style={{ scrollbarWidth: "thin" }}
         >
-          <span aria-hidden className="text-[14px] leading-none">
-            {pinned ? "«" : "›"}
-          </span>
-          {expanded && (
-            <span className="font-mono uppercase tracking-[0.18em] text-micro">
-              {pinned ? "Pinned" : "Hover-only"}
+          {NAV_GROUPS.map((group, gi) => (
+            <div key={group.title} className={gi === 0 ? "" : "mt-6"}>
+              {expanded && (
+                <p className="px-3 mb-2 font-mono uppercase tracking-[0.18em] text-micro text-muted-2 overflow-hidden whitespace-nowrap">
+                  {group.title}
+                </p>
+              )}
+              <ul className="space-y-0.5">
+                {group.items.map((item) => {
+                  const active = isActive(item.href);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={`group relative flex items-center gap-3 rounded-md h-9 text-[13px] transition-colors ${
+                          expanded ? "px-3" : "justify-center px-0"
+                        } ${
+                          active
+                            ? "bg-stone text-ink"
+                            : "text-muted hover:bg-stone hover:text-ink"
+                        }`}
+                        title={!expanded ? item.label : undefined}
+                        aria-current={active ? "page" : undefined}
+                      >
+                        {active && (
+                          <span
+                            aria-hidden
+                            className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-brand-emerald rounded-r-full"
+                          />
+                        )}
+                        <span className="shrink-0 inline-flex items-center justify-center size-4">
+                          {item.icon}
+                        </span>
+                        {expanded && (
+                          <span className="truncate overflow-hidden whitespace-nowrap">
+                            {item.label}
+                          </span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
+
+        {/* Footer: user + collapse control */}
+        <div className="border-t border-hairline p-2 space-y-1">
+          <details
+            ref={(el) => {
+              if (el) detailsRefs.current[0] = el;
+            }}
+            className="group rounded-md"
+          >
+            <summary
+              className={`list-none flex items-center gap-3 rounded-md cursor-pointer h-10 transition-colors hover:bg-stone ${
+                expanded ? "px-3" : "justify-center px-0"
+              }`}
+            >
+              <span className="shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-stone border border-border-light text-ink-soft text-[11px] font-mono">
+                {initials}
+              </span>
+              {expanded && (
+                <span className="flex-1 min-w-0 text-left">
+                  <span className="block text-[13px] text-ink truncate">
+                    {user?.full_name}
+                  </span>
+                  <span className="block font-mono uppercase tracking-[0.18em] text-micro text-muted-2 truncate">
+                    Account
+                  </span>
+                </span>
+              )}
+              {expanded && (
+                <span
+                  aria-hidden
+                  className="text-muted-2 text-micro transition-transform group-open:rotate-90"
+                >
+                  ›
+                </span>
+              )}
+            </summary>
+            {expanded && (
+              <div className="mt-1 ml-2 bg-stone border border-border-light rounded-md py-1 shadow-[0_8px_28px_-12px_rgba(0,0,0,0.8)]">
+                <Link
+                  href="/settings"
+                  className="block px-3 py-2 text-[13px] text-muted hover:text-ink hover:bg-stone-2 rounded-sm mx-1"
+                >
+                  Settings
+                </Link>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="w-full text-left px-3 py-2 text-[13px] text-error-red hover:bg-stone-2 rounded-sm mx-1"
+                >
+                  Log out
+                </button>
+              </div>
+            )}
+          </details>
+
+          <button
+            type="button"
+            onClick={() => setPinned((p) => !p)}
+            className={`w-full flex items-center gap-3 rounded-md h-9 text-[12px] text-muted-2 hover:text-ink hover:bg-stone transition-colors ${
+              expanded ? "px-3" : "justify-center px-0"
+            }`}
+            aria-label={pinned ? "Unpin sidebar" : "Pin sidebar open"}
+            title={!expanded ? (pinned ? "Unpin" : "Pin open") : undefined}
+          >
+            <span aria-hidden className="text-[14px] leading-none">
+              {pinned ? "«" : "›"}
             </span>
-          )}
-        </button>
-      </div>
-    </aside>
+            {expanded && (
+              <span className="font-mono uppercase tracking-[0.18em] text-micro">
+                {pinned ? "Pinned" : "Hover-only"}
+              </span>
+            )}
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
+

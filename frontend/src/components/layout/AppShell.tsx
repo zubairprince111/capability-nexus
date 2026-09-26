@@ -9,7 +9,7 @@ import Sidebar from "./Sidebar";
 export default function AppShell({ children }: { children: ReactNode }) {
   return (
     <RequireAuth>
-      <div className="min-h-screen bg-canvas text-ink flex">
+      <div className="min-h-screen bg-canvas text-ink flex flex-col lg:flex-row">
         <Sidebar />
         <div className="flex-1 min-w-0">{children}</div>
       </div>

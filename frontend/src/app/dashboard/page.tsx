@@ -109,7 +109,7 @@ function PageBar({
 }) {
   const result = check?.status === "completed" ? check.result : null;
   return (
-    <div className="sticky top-0 z-20 -mx-6 px-6 bg-canvas/80 backdrop-blur-md border-b border-hairline">
+    <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 bg-canvas/80 backdrop-blur-md border-b border-hairline">
       <div className="flex items-center justify-between gap-6 h-14">
         <div className="flex items-baseline gap-4 min-w-0">
           <h1 className="font-display text-ink text-[15px] font-semibold tracking-tight">
@@ -1103,7 +1103,7 @@ function DashboardInner() {
   }
 
   return (
-    <main className="max-w-[1280px] mx-auto px-6 pt-6 pb-12">
+    <main className="max-w-[1280px] mx-auto px-4 sm:px-6 pt-4 sm:pt-6 pb-12">
       <PageBar check={check} />
       <div className="h-6" />
       <HeroBand check={check} />

@@ -19,7 +19,7 @@ const inputCls =
 
 function PageBar() {
   return (
-    <div className="sticky top-0 z-20 -mx-6 px-6 bg-canvas/80 backdrop-blur-md border-b border-hairline mb-8">
+    <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 bg-canvas/80 backdrop-blur-md border-b border-hairline mb-8">
       <div className="flex items-center justify-between gap-6 h-14">
         <div className="flex items-baseline gap-4 min-w-0">
           <h1 className="font-display text-ink text-[15px] font-semibold tracking-tight">
@@ -213,7 +213,7 @@ function ChangeEmailForm({ currentEmail }: { currentEmail: string }) {
 function SettingsInner() {
   const { user, logout } = useAuth();
   return (
-    <main className="max-w-[960px] mx-auto px-6 pt-6 pb-12">
+    <main className="max-w-[960px] mx-auto px-4 sm:px-6 pt-4 sm:pt-6 pb-12">
       <PageBar />
 
       <p className="text-[13px] text-muted leading-relaxed max-w-2xl mb-12">

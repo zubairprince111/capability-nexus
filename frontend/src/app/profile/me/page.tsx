@@ -30,7 +30,7 @@ const MAX_LINKS = 8;
 
 function PageBar({ isNew }: { isNew: boolean }) {
   return (
-    <div className="sticky top-0 z-20 -mx-6 px-6 bg-canvas/80 backdrop-blur-md border-b border-hairline mb-8">
+    <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 bg-canvas/80 backdrop-blur-md border-b border-hairline mb-8">
       <div className="flex items-center justify-between gap-6 h-14">
         <div className="flex items-baseline gap-4 min-w-0">
           <h1 className="font-display text-ink text-[15px] font-semibold tracking-tight">
@@ -137,7 +137,7 @@ function ProfileInner() {
   }
 
   return (
-    <main className="max-w-[960px] mx-auto px-6 pt-6 pb-12">
+    <main className="max-w-[960px] mx-auto px-4 sm:px-6 pt-4 sm:pt-6 pb-12">
       <PageBar isNew={isNew} />
 
       {loading && (
@@ -279,7 +279,7 @@ function ProfileInner() {
             ) : (
               <ul className="space-y-2.5">
                 {links.map((link, i) => (
-                  <li key={i} className="anim-fade-up grid grid-cols-[160px_1fr_auto] gap-2.5 items-center">
+                  <li key={i} className="anim-fade-up grid grid-cols-1 sm:grid-cols-[160px_1fr_auto] gap-2.5 items-center">
                     <input
                       type="text"
                       placeholder="Label"
