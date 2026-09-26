@@ -1,7 +1,7 @@
 import OrgDetailClient from "./OrgDetailClient";
 
 export async function generateStaticParams() {
-  return [];
+  return [{ id: "default" }];
 }
 
 export default function OrgDetailPage() {
