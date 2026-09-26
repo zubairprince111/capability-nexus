@@ -13,7 +13,7 @@ import {
   Notice,
   Spinner,
 } from "@/components/ui/Bits";
-import { describeApiError, signup } from "@/lib/api-helpers";
+import { describeApiError, login, setAuthTokens, signup } from "@/lib/api-helpers";
 
 function SignupInner() {
   const [name, setName] = useState("");
@@ -21,7 +21,6 @@ function SignupInner() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [done, setDone] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,40 +31,18 @@ function SignupInner() {
     }
     setBusy(true);
     try {
-      await signup(name.trim(), email.trim(), password);
-      setDone(true);
+      const res = await signup(name.trim(), email.trim(), password);
+      if (res.access_token) {
+        setAuthTokens(res.access_token, res.refresh_token);
+      } else {
+        const loginRes = await login(email.trim(), password);
+        setAuthTokens(loginRes.access_token, loginRes.refresh_token);
+      }
+      window.location.href = "/profile/me?setup=1";
     } catch (err) {
       setError(describeApiError(err));
-    } finally {
       setBusy(false);
     }
-  }
-
-  if (done) {
-    return (
-      <main className="min-h-screen bg-canvas text-ink flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          <MonoLabel className="block mb-3">Almost done</MonoLabel>
-          <h1
-            className="font-display font-normal text-ink mb-4"
-            style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
-          >
-            Check your email.
-          </h1>
-          <p className="text-body text-ink-soft mb-6">
-            We sent a verification link to{" "}
-            <span className="text-ink font-medium">{email}</span>. Click the
-            link to finish setting up your account.
-          </p>
-          <Link
-            href={`/verify-email?email=${encodeURIComponent(email)}`}
-            className="inline-flex items-center justify-center font-medium transition-colors rounded-full bg-brand-green hover:bg-brand-emerald text-canvas px-7 py-3 text-base"
-          >
-            Open the verify-email page
-          </Link>
-        </div>
-      </main>
-    );
   }
 
   return (

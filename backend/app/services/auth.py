@@ -69,7 +69,7 @@ async def signup(
         email=normalized,
         password_hash=hash_password(password),
         full_name=full_name.strip(),
-        status="pending",
+        status="active",
     )
     db.add(user)
     await db.flush()

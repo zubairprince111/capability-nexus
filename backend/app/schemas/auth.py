@@ -30,8 +30,8 @@ class SignupResponse(BaseModel):
     email: EmailStr
     full_name: str
     status: str
-    # Local dev only: returned so the email-verification flow can be exercised
-    # without an SMTP/Cognito provider. Never returned when ENV != local.
+    access_token: str | None = None
+    refresh_token: str | None = None
     verification_token: str | None = None
 
 

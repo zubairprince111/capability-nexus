@@ -53,12 +53,15 @@ async def signup(
         token_manager=token_manager,
         ip_address=_ip(request),
     )
+    access_token = token_manager.create_access_token(user.id)
+    refresh_token = token_manager.create_refresh_token(user.id)
     return SignupResponse(
         id=user.id,
         email=user.email,
         full_name=user.full_name,
         status=user.status,
-        # Dev-only convenience; never expose the token outside local.
+        access_token=access_token,
+        refresh_token=refresh_token,
         verification_token=verification_token if get_settings().is_local else None,
     )
 

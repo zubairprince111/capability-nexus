@@ -33,7 +33,8 @@ export interface SignupResponse {
   email: string;
   full_name: string;
   status: string;
-  // Local dev only — never populated outside ENV=local.
+  access_token?: string;
+  refresh_token?: string;
   verification_token: string | null;
 }
 
