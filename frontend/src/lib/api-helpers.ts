@@ -45,13 +45,13 @@ export interface LoginResponse {
 }
 
 export async function signup(
+  fullName: string,
   email: string,
   password: string,
-  fullName: string,
 ): Promise<SignupResponse> {
   const res = await fetchApi("/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ email, password, full_name: fullName }),
+    body: JSON.stringify({ full_name: fullName, email, password }),
   });
   return res.json();
 }

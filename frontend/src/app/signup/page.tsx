@@ -13,7 +13,7 @@ import {
   Notice,
   Spinner,
 } from "@/components/ui/Bits";
-import { signup } from "@/lib/api-helpers";
+import { describeApiError, signup } from "@/lib/api-helpers";
 
 function SignupInner() {
   const [name, setName] = useState("");
@@ -35,7 +35,7 @@ function SignupInner() {
       await signup(name.trim(), email.trim(), password);
       setDone(true);
     } catch (err) {
-      setError((err as Error).message || "Signup failed");
+      setError(describeApiError(err));
     } finally {
       setBusy(false);
     }
