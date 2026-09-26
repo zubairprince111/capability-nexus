@@ -1,8 +1,17 @@
 // API client for the AI5K backend (FastAPI). See DOCS/ApplicationFlow.md §3.
 // Base URL from NEXT_PUBLIC_API_BASE_URL (default local backend /api/v1).
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v1";
+function getApiBase(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  if (!envUrl) return "http://localhost:8000/api/v1";
+  const clean = envUrl.replace(/\/+$/, "");
+  if (!clean.endsWith("/api/v1")) {
+    return `${clean}/api/v1`;
+  }
+  return clean;
+}
+
+const API_BASE = getApiBase();
 
 const ACCESS_TOKEN_KEY = "ai5k_token";
 const REFRESH_TOKEN_KEY = "ai5k_refresh_token";
